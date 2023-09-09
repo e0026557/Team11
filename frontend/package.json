@@ -39,11 +39,8 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
-<<<<<<< HEAD
   },
   "devDependencies": {
     "cypress": "^13.1.0"
-=======
->>>>>>> b6fd61624e1bc1d59e2671c0cf835f3d8038398b
   }
 }
