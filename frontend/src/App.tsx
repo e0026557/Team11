@@ -4,6 +4,7 @@ import './App.css';
 import Toastify from "./shared/toast/Toastify";
 import Home from "./modules/home/Home";
 import Login from "./modules/user/Login";
+import Navbar from './shared/navigation/Navbar';
 
 const App = () => {
   return (
@@ -11,6 +12,7 @@ const App = () => {
       {/* React Toastify */}
       <Toastify/>
       <Router>
+        <Navbar />
         <Routes>
           <Route index element={<Home/>}/>
           <Route path='/login' element={<Login/>}/>
