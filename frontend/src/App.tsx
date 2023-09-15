@@ -5,6 +5,7 @@ import Toastify from "./shared/toast/Toastify";
 import Home from "./modules/home/Home";
 import Login from "./modules/user/Login";
 import Layout from './shared/layout/Layout';
+import ErrorPage from './shared/error/ErrorPage';
 
 const App = () => {
   return (
@@ -16,6 +17,7 @@ const App = () => {
           <Route element={<Layout/>}>
             <Route index element={<Home />} />
             <Route path='/login' element={<Login />} />
+            <Route path='*' element={<ErrorPage />} />
           </Route>
         </Routes>
       </Router>
