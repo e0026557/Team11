@@ -6,6 +6,7 @@ import Home from "./modules/home/Home";
 import Login from "./modules/user/Login";
 import Layout from './shared/layout/Layout';
 import ErrorPage from './shared/error/ErrorPage';
+import Register from './modules/user/Register';
 
 const App = () => {
   return (
@@ -17,6 +18,7 @@ const App = () => {
           <Route element={<Layout/>}>
             <Route index element={<Home />} />
             <Route path='/login' element={<Login />} />
+            <Route path='/register' element={<Register />} />
             <Route path='*' element={<ErrorPage />} />
           </Route>
         </Routes>
