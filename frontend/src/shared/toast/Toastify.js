@@ -5,7 +5,7 @@ import 'react-toastify/dist/ReactToastify.css';
 const Toastify = () => {
   return (
     <ToastContainer
-      position='top-right'
+      position='top-center'
       hideProgressBar={true}
     />
   );

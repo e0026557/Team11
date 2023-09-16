@@ -1,6 +1,53 @@
 import React from "react";
+import {
+  SubmitErrorHandler,
+  SubmitHandler,
+  UseFormGetValues,
+  UseFormHandleSubmit,
+  UseFormRegister,
+  UseFormResetField,
+  UseFormSetValue,
+  useForm,
+} from "react-hook-form";
+import { toast } from "react-toastify";
+import { requiredInputErrorMsg } from "../../shared/util/error-message.util";
+
+type LoginInputs = {
+  email: string;
+  password: string;
+};
 
 const Login = () => {
+  // react-hook-form
+  const form: {
+    handleSubmit: UseFormHandleSubmit<LoginInputs>;
+    register: UseFormRegister<LoginInputs>;
+    resetField: UseFormResetField<LoginInputs>;
+    getValues: UseFormGetValues<LoginInputs>;
+    setValue: UseFormSetValue<LoginInputs>;
+    formState: {
+      errors: any;
+      touchedFields: any;
+      isSubmitting: boolean;
+      isSubmitted: boolean;
+      isValid: boolean;
+    };
+  } = useForm<LoginInputs>({
+    mode: "all",
+  });
+
+  const submitForm: SubmitHandler<LoginInputs> = async (data) => {
+    console.log("submitForm: ", data);
+    // TODO: Axios call to login API endpoint
+  };
+
+  const onError: SubmitErrorHandler<LoginInputs> = (errors) => {
+    console.log("onError: ", errors);
+    toast.error("Incorrect email and/or password.", {
+      toastId: 'login-error',
+    });
+  };
+
   return (
     <>
       <div className="flex min-h-fit flex-1 flex-col justify-center px-6 py-12 lg:px-8">
@@ -16,7 +63,10 @@ const Login = () => {
         </div>
 
         <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
-          <form className="space-y-6" action="#" method="POST">
+          <form
+            className="space-y-6"
+            onSubmit={form.handleSubmit(submitForm, onError)}
+          >
             <div>
               <label
                 htmlFor="email"
@@ -26,13 +76,21 @@ const Login = () => {
               </label>
               <div className="mt-2">
                 <input
-                  id="email"
-                  name="email"
+                  {...form.register("email", {
+                    required: {
+                      value: true,
+                      message: requiredInputErrorMsg("email"),
+                    },
+                  })}
                   type="email"
                   autoComplete="email"
-                  required
                   className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                 />
+                {form.formState.errors?.email ? (
+                  <label className="text-red-400">
+                    {form.formState.errors.email.message}
+                  </label>
+                ) : null}
               </div>
             </div>
 
@@ -46,7 +104,7 @@ const Login = () => {
                 </label>
                 <div className="text-sm">
                   <a
-                    href="#"
+                    href="/forgot-password"
                     className="font-semibold text-indigo-600 hover:text-indigo-500"
                   >
                     Forgot password?
@@ -55,13 +113,20 @@ const Login = () => {
               </div>
               <div className="mt-2">
                 <input
-                  id="password"
-                  name="password"
+                  {...form.register("password", {
+                    required: {
+                      value: true,
+                      message: requiredInputErrorMsg("password"),
+                    },
+                  })}
                   type="password"
-                  autoComplete="current-password"
-                  required
                   className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                 />
+                {form.formState.errors?.password ? (
+                  <label className="text-red-400">
+                    {form.formState.errors.password.message}
+                  </label>
+                ) : null}
               </div>
             </div>
 
@@ -78,7 +143,7 @@ const Login = () => {
           <p className="mt-10 text-center text-sm text-gray-500">
             Don't have an account yet?{" "}
             <a
-              href="#"
+              href="/register"
               className="font-semibold leading-6 text-indigo-600 hover:text-indigo-500"
             >
               Register
