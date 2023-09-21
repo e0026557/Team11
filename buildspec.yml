@@ -1,0 +1,35 @@
+version: 0.2
+
+phases:
+  install:
+    runtime-versions:
+      nodejs: 16
+
+    commands:
+      # install npm
+      - echo Entered the install phase...
+      - cd frontend
+      - npm install
+
+  build:
+    commands:
+      # run build script
+      - echo Entered the build phase...
+      - echo Build started on `date`
+      - npm run build
+
+  post_build:
+    commands:
+      - echo Entered the post_build phase...
+      - echo Build completed on `date`
+
+artifacts:
+  # include all files required to run application
+  # notably excluded is node_modules, as this will cause overwrite error on deploy
+  files:
+    - build/**/*
+    - appspec.yml
+    - scripts/before_install.sh
+    - scripts/start_server.sh
+
+  
