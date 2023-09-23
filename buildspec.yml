@@ -28,8 +28,5 @@ artifacts:
   # notably excluded is node_modules, as this will cause overwrite error on deploy
   files:
     - build/**/*
-    - appspec.yml
-    - scripts/before_install.sh
-    - scripts/start_server.sh
 
   
