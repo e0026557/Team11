@@ -3,3 +3,7 @@ export const isValidEmail = (email: string) => {
     email
   );
 };
+
+export const isASCII = (value: string) => {
+  return /^[\x00-\x7F]*$/.test(value);
+};

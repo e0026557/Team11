@@ -12,15 +12,18 @@ import {
 } from "react-hook-form";
 import { toast } from "react-toastify";
 import {
+  asciiErrorMsg,
   invalidEmailErrorMsg,
+  maxLengthErrorMsg,
   passwordNotMatchedErrorMsg,
   reEnterPasswordErrorMsg,
   requiredInputErrorMsg,
 } from "../../shared/util/error-message.util";
-import { isValidEmail } from "../../shared/util/validation";
+import { isASCII, isValidEmail } from "../../shared/util/validation";
 
 type RegisterInputs = {
   name: string;
+  role: number | null;
   email: string;
   password: string;
   confirmPassword: string;
@@ -48,6 +51,27 @@ const Register = () => {
 
   // Watched fields
   const watchPassword = form.watch("password");
+
+  const ROLES = [
+    {
+      roleId: 1,
+      roleDescription: 'Campsite Permit Applicant'
+    },
+    {
+      roleId: 2,
+      roleDescription: 'Campsite Admin'
+    },
+  ];
+
+  const renderRoleOptions = () => {
+    return ROLES.map((role, idx) => {
+      return (
+        <option value={role.roleId} key={role.roleId}>
+          {role.roleDescription}
+        </option>
+      )
+    });
+  };
 
   const submitForm: SubmitHandler<RegisterInputs> = async (data) => {
     console.log("submitForm: ", data);
@@ -82,6 +106,68 @@ const Register = () => {
           >
             <div>
               <label
+                htmlFor="name"
+                className="block text-sm font-medium leading-6 text-gray-900"
+              >
+                Name
+              </label>
+              <div className="mt-2">
+                <input
+                  {...form.register("name", {
+                    required: {
+                      value: true,
+                      message: requiredInputErrorMsg("name"),
+                    },
+                    maxLength: {
+                      value: 100,
+                      message: maxLengthErrorMsg("name", 100),
+                    },
+                    validate: {
+                      isAscii: (value) =>
+                        !isASCII(value) && asciiErrorMsg("name"),
+                    },
+                  })}
+                  type="text"
+                  className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                />
+                {form.formState.errors?.name ? (
+                  <label className="text-red-400">
+                    {form.formState.errors.name.message}
+                  </label>
+                ) : null}
+              </div>
+            </div>
+
+            <div>
+              <label
+                htmlFor="role"
+                className="block text-sm font-medium leading-6 text-gray-900"
+              >
+                Role
+              </label>
+              <div className="mt-2">
+                <select
+                  {...form.register("role", {
+                    required: {
+                      value: true,
+                      message: requiredInputErrorMsg("role"),
+                    },
+                  })}
+                  className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                >
+                  <option value=''>Please select role</option>
+                  {renderRoleOptions()}
+                </select>
+                {form.formState.errors?.role ? (
+                  <label className="text-red-400">
+                    {form.formState.errors.role.message}
+                  </label>
+                ) : null}
+              </div>
+            </div>
+
+            <div>
+              <label
                 htmlFor="email"
                 className="block text-sm font-medium leading-6 text-gray-900"
               >
@@ -93,6 +179,10 @@ const Register = () => {
                     required: {
                       value: true,
                       message: requiredInputErrorMsg("email"),
+                    },
+                    maxLength: {
+                      value: 320,
+                      message: maxLengthErrorMsg("email", 320),
                     },
                     validate: {
                       isValidEmail: (value) =>
@@ -126,6 +216,10 @@ const Register = () => {
                       value: true,
                       message: requiredInputErrorMsg("password"),
                     },
+                    maxLength: {
+                      value: 50,
+                      message: maxLengthErrorMsg("password", 50),
+                    },
                   })}
                   type="password"
                   className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
@@ -153,6 +247,10 @@ const Register = () => {
                     required: {
                       value: watchPassword?.length > 0,
                       message: reEnterPasswordErrorMsg(),
+                    },
+                    maxLength: {
+                      value: 50,
+                      message: maxLengthErrorMsg("password", 50),
                     },
                     validate: {
                       isPasswordMatched: (value) => {
