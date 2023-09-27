@@ -128,6 +128,7 @@ const Register = () => {
                     },
                   })}
                   type="text"
+                  maxLength={100}
                   className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                 />
                 {form.formState.errors?.name ? (
@@ -190,6 +191,7 @@ const Register = () => {
                     },
                   })}
                   type="text"
+                  maxLength={320}
                   className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                 />
                 {form.formState.errors?.email ? (
@@ -222,6 +224,7 @@ const Register = () => {
                     },
                   })}
                   type="password"
+                  maxLength={50}
                   className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                 />
                 {form.formState.errors?.password ? (
@@ -264,6 +267,7 @@ const Register = () => {
                     },
                   })}
                   type="password"
+                  maxLength={50}
                   className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                 />
                 {form.formState.errors?.confirmPassword ? (

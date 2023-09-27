@@ -10,7 +10,8 @@ import {
   useForm,
 } from "react-hook-form";
 import { toast } from "react-toastify";
-import { requiredInputErrorMsg } from "../../shared/util/error-message.util";
+import { invalidEmailErrorMsg, maxLengthErrorMsg, requiredInputErrorMsg } from "../../shared/util/error-message.util";
+import { isValidEmail } from "../../shared/util/validation";
 
 type LoginInputs = {
   email: string;
@@ -81,8 +82,17 @@ const Login = () => {
                       value: true,
                       message: requiredInputErrorMsg("email"),
                     },
+                    maxLength: {
+                      value: 320,
+                      message: maxLengthErrorMsg('email', 320),
+                    },
+                    validate: {
+                      isValidEmail: (value) =>
+                        !isValidEmail(value) && invalidEmailErrorMsg(),
+                    },
                   })}
                   type="email"
+                  maxLength={320}
                   autoComplete="email"
                   className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                 />
@@ -118,8 +128,13 @@ const Login = () => {
                       value: true,
                       message: requiredInputErrorMsg("password"),
                     },
+                    maxLength: {
+                      value: 50,
+                      message: maxLengthErrorMsg('password', 50),
+                    }
                   })}
                   type="password"
+                  maxLength={50}
                   className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                 />
                 {form.formState.errors?.password ? (
