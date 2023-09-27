@@ -7,6 +7,7 @@ import Login from "./modules/user/Login";
 import Layout from './shared/layout/Layout';
 import ErrorPage from './shared/error/ErrorPage';
 import Register from './modules/user/Register';
+import Dashboard from './modules/dashboard/Dashboard';
 
 const App = () => {
   return (
@@ -19,6 +20,7 @@ const App = () => {
             <Route index element={<Home />} />
             <Route path='/login' element={<Login />} />
             <Route path='/register' element={<Register />} />
+            <Route path='/dashboard' element={<Dashboard />} />
             <Route path='*' element={<ErrorPage />} />
           </Route>
         </Routes>
