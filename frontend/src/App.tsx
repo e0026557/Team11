@@ -8,6 +8,7 @@ import Layout from './shared/layout/Layout';
 import ErrorPage from './shared/error/ErrorPage';
 import Register from './modules/user/Register';
 import Dashboard from './modules/dashboard/Dashboard';
+import Campsites from './modules/campsites/Campsites';
 
 const App = () => {
   return (
@@ -21,6 +22,7 @@ const App = () => {
             <Route path='/login' element={<Login />} />
             <Route path='/register' element={<Register />} />
             <Route path='/dashboard' element={<Dashboard />} />
+            <Route path='/campsites' element={<Campsites />} />
             <Route path='*' element={<ErrorPage />} />
           </Route>
         </Routes>
