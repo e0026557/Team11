@@ -1,15 +1,36 @@
+import { faPlus } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React from "react";
 
 const Dashboard = () => {
-	// TODO: Change to campsite permit details
-  const people = [
+  const permits = [
     {
-      name: "Lindsay Walton",
-      title: "Front-end Developer",
-      email: "lindsay.walton@example.com",
-      role: "Member",
+      permitId: 1,
+      userId: 1,
+      startDate: new Date(),
+      endDate: new Date(),
+      location: "East Coast Park",
+      area: "A",
+      status: 0,
     },
-    // More people...
+    {
+      permitId: 2,
+      userId: 1,
+      startDate: new Date(),
+      endDate: new Date(),
+      location: "East Coast Park",
+      area: "B",
+      status: 1,
+    },
+    {
+      permitId: 3,
+      userId: 1,
+      startDate: new Date(),
+      endDate: new Date(),
+      location: "East Coast Park",
+      area: "C",
+      status: 1,
+    },
   ];
 
   return (
@@ -17,20 +38,16 @@ const Dashboard = () => {
       <div className="pt-8 px-4 sm:px-6 lg:px-8">
         <div className="sm:flex sm:items-center">
           <div className="sm:flex-auto">
-            <h1 className="text-base font-semibold leading-6 text-gray-900">
+            <h1 className="text-3xl font-semibold leading-6 text-gray-900">
               Dashboard
             </h1>
-            <p className="mt-2 text-sm text-gray-700">
-              A list of all the users in your account including their name,
-              title, email and role.
-            </p>
           </div>
           <div className="mt-4 sm:ml-16 sm:mt-0 sm:flex-none">
             <button
               type="button"
               className="block rounded-md bg-indigo-600 px-3 py-2 text-center text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
             >
-              Apply for Campsite Permit
+              <FontAwesomeIcon icon={faPlus} /> Apply for Campsite Permit
             </button>
           </div>
         </div>
@@ -45,25 +62,37 @@ const Dashboard = () => {
                         scope="col"
                         className="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900 sm:pl-6"
                       >
-                        Name
+                        S/N
+                      </th>
+                      <th
+                        scope="col"
+                        className="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900 sm:pl-6"
+                      >
+                        Location
                       </th>
                       <th
                         scope="col"
                         className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900"
                       >
-                        Title
+                        Area
                       </th>
                       <th
                         scope="col"
                         className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900"
                       >
-                        Email
+                        Start Date
                       </th>
                       <th
                         scope="col"
                         className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900"
                       >
-                        Role
+                        End Date
+                      </th>
+                      <th
+                        scope="col"
+                        className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900"
+                      >
+                        Status
                       </th>
                       <th
                         scope="col"
@@ -74,26 +103,32 @@ const Dashboard = () => {
                     </tr>
                   </thead>
                   <tbody className="divide-y divide-gray-200 bg-white">
-                    {people.map((person) => (
-                      <tr key={person.email}>
+                    {permits.map((permit, idx) => (
+                      <tr key={permit.permitId}>
                         <td className="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-6">
-                          {person.name}
+                          {idx + 1}
+                        </td>
+                        <td className="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-6">
+                          {permit.location}
                         </td>
                         <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
-                          {person.title}
+                          {permit.area}
                         </td>
                         <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
-                          {person.email}
+                          {permit.startDate.toString()}
                         </td>
                         <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
-                          {person.role}
+                          {permit.endDate.toString()}
+                        </td>
+                        <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
+                          {permit.status ? "Approved" : "Pending"}
                         </td>
                         <td className="relative whitespace-nowrap py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-6">
                           <a
-                            href="#"
+                            href="#" // TODO: To link to edit page / modal for specified permit id
                             className="text-indigo-600 hover:text-indigo-900"
                           >
-                            Edit<span className="sr-only">, {person.name}</span>
+                            Edit
                           </a>
                         </td>
                       </tr>
