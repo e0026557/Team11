@@ -9,6 +9,7 @@ import ErrorPage from './shared/error/ErrorPage';
 import Register from './modules/user/Register';
 import Dashboard from './modules/dashboard/Dashboard';
 import Campsites from './modules/campsites/Campsites';
+import PermitApplication from './modules/permitApplication/PermitApplication';
 
 const App = () => {
   return (
@@ -23,6 +24,7 @@ const App = () => {
             <Route path='/register' element={<Register />} />
             <Route path='/dashboard' element={<Dashboard />} />
             <Route path='/campsites' element={<Campsites />} />
+            <Route path='/apply/*' element={<PermitApplication />} />
             <Route path='*' element={<ErrorPage />} />
           </Route>
         </Routes>
