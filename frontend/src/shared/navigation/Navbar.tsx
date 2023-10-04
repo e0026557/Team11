@@ -6,20 +6,22 @@ import {
   XMarkIcon,
   UserIcon,
 } from "@heroicons/react/24/outline";
-import { Link } from "react-router-dom";
-
-const navigation = [
-  { name: "Dashboard", href: "/dashboard", current: true },
-  { name: "Campsites", href: "/campsites", current: false },
-  { name: "Projects", href: "#", current: false },
-  { name: "Calendar", href: "#", current: false },
-];
+import { Link, useLocation } from "react-router-dom";
 
 function classNames(...classes: string[]) {
   return classes.filter(Boolean).join(" ");
 }
 
-export default function Example() {
+export default function Navbar() {
+  const pathname = useLocation().pathname;
+
+  const navigation = [
+    { name: "Dashboard", href: "/dashboard", current: pathname === "/dashboard" },
+    { name: "Campsites", href: "/campsites", current: pathname === "/campsites" },
+    { name: "Projects", href: "#", current: false },
+    { name: "Calendar", href: "#", current: false },
+  ];
+
   return (
     <Disclosure as="nav" className="bg-gray-800">
       {({ open }) => (
