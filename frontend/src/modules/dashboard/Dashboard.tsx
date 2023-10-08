@@ -1,9 +1,30 @@
 import { faPlus } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import React from "react";
+import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import PermitApplication from "../permitApplication/PermitApplication";
+
+interface CampsiteData {
+  location: string;
+  campsiteArea: string;
+  startDate: Date;
+  endDate: Date;
+  status: string;
+  userId: number;
+  permitId: number;
+}
 
 const Dashboard = () => {
+  const [isModalVisible, setIsModalVisible] = useState(false);
+  const [editData, setEditData] = useState<CampsiteData>({
+    location: "",
+    campsiteArea: "",
+    startDate: new Date(),
+    endDate: new Date(),
+    status: "",
+    userId: 0,
+    permitId: 0,
+  });
   const navigate = useNavigate();
 
   const permits = [
@@ -13,28 +34,40 @@ const Dashboard = () => {
       startDate: new Date(),
       endDate: new Date(),
       location: "East Coast Park",
-      area: "A",
-      status: 0,
+      campsiteArea: "A",
+      status: "Pending",
     },
     {
       permitId: 2,
       userId: 1,
       startDate: new Date(),
       endDate: new Date(),
-      location: "East Coast Park",
-      area: "B",
-      status: 1,
+      location: "West Coast Park",
+      campsiteArea: "B",
+      status: "Approved",
     },
     {
       permitId: 3,
       userId: 1,
       startDate: new Date(),
       endDate: new Date(),
-      location: "East Coast Park",
-      area: "C",
-      status: 1,
+      location: "Changi Beach",
+      campsiteArea: "C",
+      status: "Approved",
     },
   ];
+
+  const handleEditClick = (rowData: CampsiteData) => {
+    console.log("Editing:", rowData);
+    setEditData((prev) => ({ ...rowData }));
+    setIsModalVisible(true);
+  };
+
+  console.log("-.-.-.-EditData", editData);
+
+  const closeModal = () => {
+    setIsModalVisible(false);
+  };
 
   return (
     <>
@@ -49,7 +82,7 @@ const Dashboard = () => {
             <button
               type="button"
               className="block rounded-md bg-indigo-600 px-3 py-2 text-center text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
-              onClick={() => navigate('/apply')}
+              onClick={() => navigate("/apply")}
             >
               <FontAwesomeIcon icon={faPlus} /> Apply for Campsite Permit
             </button>
@@ -116,7 +149,7 @@ const Dashboard = () => {
                           {permit.location}
                         </td>
                         <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
-                          {permit.area}
+                          {permit.campsiteArea}
                         </td>
                         <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
                           {permit.startDate.toString()}
@@ -125,15 +158,15 @@ const Dashboard = () => {
                           {permit.endDate.toString()}
                         </td>
                         <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
-                          {permit.status ? "Approved" : "Pending"}
+                          {permit.status}
                         </td>
                         <td className="relative whitespace-nowrap py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-6">
-                          <a
-                            href="#" // TODO: To link to edit page / modal for specified permit id
-                            className="text-indigo-600 hover:text-indigo-900"
+                          <button
+                            className="text-blue-500 hover:text-blue-700 cursor-pointer"
+                            onClick={() => handleEditClick(permit)}
                           >
                             Edit
-                          </a>
+                          </button>
                         </td>
                       </tr>
                     ))}
@@ -144,8 +177,71 @@ const Dashboard = () => {
           </div>
         </div>
       </div>
+      <Modal
+        isVisible={isModalVisible}
+        onClose={closeModal}
+        editData={editData}
+      />
     </>
   );
 };
 
 export default Dashboard;
+interface EditData {
+  location: string;
+  campsiteArea: string;
+  startDate: Date | null;
+  endDate: Date | null;
+  status: string;
+  userId: number;
+  permitId: number;
+}
+
+interface ModalProps {
+  isVisible: boolean;
+  onClose: () => void;
+  editData: EditData | null; // Assuming EditData is the type/interface for your editData object
+}
+
+const Modal: React.FC<ModalProps> = ({ isVisible, onClose, editData }) => {
+  return (
+    // Modal implementation using Tailwind CSS4
+    <>
+      <Backdrop isVisible={isVisible} onClose={onClose} />
+      <div
+        className={`fixed inset-0 flex items-center justify-center z-50 ${
+          isVisible ? "visible" : "invisible"
+        }`}
+      >
+        <div className="bg-white p-8 rounded shadow-lg w-3/4 h-3/4">
+          <div className="modal-content">
+            <div className="modal-header">
+              <button type="button" className="close" onClick={onClose}>
+                <span>&times;</span>
+              </button>
+            </div>
+            <div className="modal-body">
+              <PermitApplication editData={editData} />
+            </div>
+          </div>
+        </div>
+      </div>
+    </>
+  );
+};
+
+interface BackdropProps {
+  isVisible: boolean;
+  onClose: () => void;
+}
+
+const Backdrop: React.FC<BackdropProps> = ({ isVisible, onClose }) => {
+  return (
+    <div
+      className={`fixed inset-0 bg-black opacity-50 z-50 transition-opacity ${
+        isVisible ? "visible" : "invisible"
+      }`}
+      onClick={onClose}
+    ></div>
+  );
+};
