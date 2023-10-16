@@ -17,9 +17,8 @@ export default function Navbar() {
 
   const navigation = [
     { name: "Dashboard", href: "/dashboard", current: pathname === "/dashboard" },
-    { name: "Campsites", href: "/campsites", current: pathname === "/campsites" },
-    { name: "Projects", href: "#", current: false },
-    { name: "Calendar", href: "#", current: false },
+    { name: "Reviews", href: "/reviews", current: pathname === "/reviews" },
+    { name: "Feedback", href: "/feedback", current: pathname === "/feedback" },
   ];
 
   return (
