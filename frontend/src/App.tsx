@@ -10,6 +10,7 @@ import Register from './modules/user/Register';
 import Dashboard from './modules/dashboard/Dashboard';
 import Campsites from './modules/campsites/Campsites';
 import PermitApplication from './modules/permitApplication/PermitApplication';
+import FeedbackForm from './modules/feedback/FeedbackForm';
 
 const App = () => {
   return (
@@ -25,7 +26,7 @@ const App = () => {
             <Route path='/dashboard' element={<Dashboard />} />
             <Route path='/reviews' element={<Campsites />} />
             {/* TODO: Replace with feedback module */}
-            <Route path='/feedback' element={<Campsites />} /> 
+            <Route path='/feedback' element={<FeedbackForm />} /> 
             <Route path='/apply/*' element={<PermitApplication />} />
             <Route path='*' element={<ErrorPage />} />
           </Route>
