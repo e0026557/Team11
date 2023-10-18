@@ -20,8 +20,10 @@ import {
   requiredInputErrorMsg,
 } from "../../shared/util/error-message.util";
 import { isASCII, isValidEmail } from "../../shared/util/validation";
+import axios from "axios";
 
 type RegisterInputs = {
+  username: string;
   name: string;
   role: number | null;
   email: string;
@@ -54,11 +56,11 @@ const Register = () => {
 
   const ROLES = [
     {
-      roleId: 1,
+      roleId: 0,
       roleDescription: 'Campsite Permit Applicant'
     },
     {
-      roleId: 2,
+      roleId: 1,
       roleDescription: 'Campsite Admin'
     },
   ];
@@ -75,7 +77,12 @@ const Register = () => {
 
   const submitForm: SubmitHandler<RegisterInputs> = async (data) => {
     console.log("submitForm: ", data);
-    // TODO: Axios call to register API endpoint
+    // TODO: Axios call to register API endpoint once CORS issue has been resolved
+    // const registerResponse = await axios.post("https://rvdq38ozu8.execute-api.ap-southeast-1.amazonaws.com/dev/api/user/register", {
+    //   data
+    // });
+
+    // console.log('registerResponse: ', registerResponse);
   };
 
   const onError: SubmitErrorHandler<RegisterInputs> = (errors) => {
@@ -106,6 +113,41 @@ const Register = () => {
           >
             <div>
               <label
+                htmlFor="username"
+                className="block text-sm font-medium leading-6 text-gray-900"
+              >
+                Username
+              </label>
+              <div className="mt-2">
+                <input
+                  {...form.register("username", {
+                    required: {
+                      value: true,
+                      message: requiredInputErrorMsg("username"),
+                    },
+                    maxLength: {
+                      value: 100,
+                      message: maxLengthErrorMsg("username", 100),
+                    },
+                    validate: {
+                      isAscii: (value) =>
+                        isASCII(value) || asciiErrorMsg("username"),
+                    },
+                  })}
+                  type="text"
+                  maxLength={100}
+                  className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                />
+                {form.formState.errors?.username ? (
+                  <label className="text-red-400">
+                    {form.formState.errors.username.message}
+                  </label>
+                ) : null}
+              </div>
+            </div>
+
+            <div>
+              <label
                 htmlFor="name"
                 className="block text-sm font-medium leading-6 text-gray-900"
               >
@@ -124,7 +166,7 @@ const Register = () => {
                     },
                     validate: {
                       isAscii: (value) =>
-                        !isASCII(value) && asciiErrorMsg("name"),
+                        isASCII(value) || asciiErrorMsg("name"),
                     },
                   })}
                   type="text"
@@ -187,7 +229,7 @@ const Register = () => {
                     },
                     validate: {
                       isValidEmail: (value) =>
-                        !isValidEmail(value) && invalidEmailErrorMsg(),
+                        isValidEmail(value) || invalidEmailErrorMsg(),
                     },
                   })}
                   type="text"
@@ -259,7 +301,7 @@ const Register = () => {
                       isPasswordMatched: (value) => {
                         if (value && watchPassword) {
                           return (
-                            value !== watchPassword &&
+                            value === watchPassword ||
                             passwordNotMatchedErrorMsg()
                           );
                         }
