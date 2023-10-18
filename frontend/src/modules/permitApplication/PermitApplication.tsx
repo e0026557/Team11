@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import DatePicker from "react-datepicker";
+import axios from "axios";
 import "react-datepicker/dist/react-datepicker.css";
 
 interface FormDataType {
@@ -70,22 +71,17 @@ const PermitApplication = ({ editData }: { editData?: EditData | null }) => {
   };
 
   const handleSubmit = () => {
-    // Perform validation here if needed
-    // Example API endpoint URL, replace it with your actual API endpoint
     const apiUrl = "https://api.example.com/permit-applications";
-
-    // Make a POST request to the API
-    fetch(apiUrl, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(formData),
-    })
-      .then((response) => response.json())
-      .then((data) => {
+    // Make a POST request to the API using Axios
+    axios
+      .post(apiUrl, formData, {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      })
+      .then((response) => {
         // Handle success response from the API
-        console.log("Success:", data);
+        console.log("Success:", response.data);
       })
       .catch((error) => {
         // Handle error here
