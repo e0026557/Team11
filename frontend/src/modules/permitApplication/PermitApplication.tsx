@@ -5,7 +5,7 @@ import "react-datepicker/dist/react-datepicker.css";
 interface FormDataType {
   userId: string;
   location: string;
-  campsiteArea: string;
+  area: string;
   startDate: Date | null;
   endDate: Date | null;
   status: string;
@@ -13,7 +13,7 @@ interface FormDataType {
 
 interface EditData {
   location: string;
-  campsiteArea: string;
+  area: string;
   startDate: Date | null;
   endDate: Date | null;
   status: string;
@@ -26,7 +26,7 @@ const PermitApplication = ({ editData }: { editData?: EditData | null }) => {
   const [formData, setFormData] = useState<FormDataType>({
     userId: "", // You can get the user ID from your authentication system
     location: editData?.location ?? "No Selection",
-    campsiteArea: editData?.campsiteArea ?? "No Selection",
+    area: editData?.area ?? "No Selection",
     startDate: editData?.startDate ?? null,
     endDate: editData?.endDate ?? null,
     status: "Pending", // Assuming the initial status is "Pending"
@@ -38,7 +38,7 @@ const PermitApplication = ({ editData }: { editData?: EditData | null }) => {
       setFormData({
         userId: "", // You can get the user ID from your authentication system
         location: editData.location,
-        campsiteArea: editData.campsiteArea,
+        area: editData.area,
         startDate: editData.startDate,
         endDate: editData.endDate,
         status: editData.status,
@@ -127,7 +127,7 @@ const PermitApplication = ({ editData }: { editData?: EditData | null }) => {
           <select
             name="campsiteArea"
             onChange={handleInputChange}
-            value={formData.campsiteArea}
+            value={formData.area}
             className="mt-1 p-2 border border-gray-300 rounded-md w-1/3"
           >
             <option value="No Selection">No Selection</option>

@@ -6,7 +6,7 @@ import PermitApplication from "../permitApplication/PermitApplication";
 
 interface CampsiteData {
   location: string;
-  campsiteArea: string;
+  area: string;
   startDate: Date;
   endDate: Date;
   status: string;
@@ -16,9 +16,10 @@ interface CampsiteData {
 
 const Dashboard = () => {
   const [isModalVisible, setIsModalVisible] = useState(false);
+  const [permitsList, setPermitsList] = useState<CampsiteData[]>([]);
   const [editData, setEditData] = useState<CampsiteData>({
     location: "",
-    campsiteArea: "",
+    area: "",
     startDate: new Date(),
     endDate: new Date(),
     status: "",
@@ -34,7 +35,7 @@ const Dashboard = () => {
       startDate: new Date(),
       endDate: new Date(),
       location: "East Coast Park",
-      campsiteArea: "A",
+      area: "A",
       status: "Pending",
     },
     {
@@ -43,7 +44,7 @@ const Dashboard = () => {
       startDate: new Date(),
       endDate: new Date(),
       location: "West Coast Park",
-      campsiteArea: "B",
+      area: "B",
       status: "Approved",
     },
     {
@@ -52,7 +53,7 @@ const Dashboard = () => {
       startDate: new Date(),
       endDate: new Date(),
       location: "Changi Beach",
-      campsiteArea: "C",
+      area: "C",
       status: "Approved",
     },
   ];
@@ -149,7 +150,7 @@ const Dashboard = () => {
                           {permit.location}
                         </td>
                         <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
-                          {permit.campsiteArea}
+                          {permit.area}
                         </td>
                         <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
                           {permit.startDate.toString()}
@@ -189,7 +190,7 @@ const Dashboard = () => {
 export default Dashboard;
 interface EditData {
   location: string;
-  campsiteArea: string;
+  area: string;
   startDate: Date | null;
   endDate: Date | null;
   status: string;
