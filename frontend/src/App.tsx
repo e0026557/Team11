@@ -25,7 +25,6 @@ const App = () => {
             <Route path='/register' element={<Register />} />
             <Route path='/dashboard' element={<Dashboard />} />
             <Route path='/reviews' element={<Campsites />} />
-            {/* TODO: Replace with feedback module */}
             <Route path='/feedback' element={<FeedbackForm />} /> 
             <Route path='/apply/*' element={<PermitApplication />} />
             <Route path='*' element={<ErrorPage />} />

@@ -21,6 +21,7 @@ import {
 } from "../../shared/util/error-message.util";
 import { isASCII, isValidEmail } from "../../shared/util/validation";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 type RegisterInputs = {
   username: string;
@@ -32,6 +33,8 @@ type RegisterInputs = {
 };
 
 const Register = () => {
+  const navigate = useNavigate();
+
   // react-hook-form
   const form: {
     handleSubmit: UseFormHandleSubmit<RegisterInputs>;
@@ -77,12 +80,32 @@ const Register = () => {
 
   const submitForm: SubmitHandler<RegisterInputs> = async (data) => {
     console.log("submitForm: ", data);
-    // TODO: Axios call to register API endpoint once CORS issue has been resolved
-    // const registerResponse = await axios.post("https://rvdq38ozu8.execute-api.ap-southeast-1.amazonaws.com/dev/api/user/register", {
-    //   data
-    // });
+    try {
+      const registerResponse = await axios.post("https://rvdq38ozu8.execute-api.ap-southeast-1.amazonaws.com/dev/api/user/Register", data);
+  
+      console.log('registerResponse: ', registerResponse);
 
-    // console.log('registerResponse: ', registerResponse);
+      if (registerResponse.status === 200) {
+        const loginResponse = await axios.post("https://rvdq38ozu8.execute-api.ap-southeast-1.amazonaws.com/dev/api/user/Login", {
+          email: registerResponse?.data?.email,
+          password: registerResponse?.data?.password
+        });
+
+        console.log('loginResponse: ', loginResponse);
+
+        sessionStorage.setItem("userId", loginResponse?.data?.userId);
+        navigate('/dashboard');
+      }
+
+    } catch (error) {
+      console.log('error: ', error);
+      toast.error(
+        "An error occurred while registering account. Please try again.",
+        {
+          toastId: "register-error",
+        }
+      );
+    }
   };
 
   const onError: SubmitErrorHandler<RegisterInputs> = (errors) => {

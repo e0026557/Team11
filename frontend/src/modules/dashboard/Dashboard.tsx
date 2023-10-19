@@ -17,37 +17,9 @@ interface CampsiteData {
 }
 
 const Dashboard = () => {
+  const [isLoading, setIsLoading] = useState(true);
   const [isModalVisible, setIsModalVisible] = useState(false);
-  const [permitsList, setPermitsList] = useState<CampsiteData[]>([
-    // TODO: To remove once axios api call is up
-    // {
-    //   permitId: 1,
-    //   userId: 1,
-    //   startDate: new Date(),
-    //   endDate: new Date(),
-    //   location: "East Coast Park",
-    //   area: "A",
-    //   status: "Pending",
-    // },
-    // {
-    //   permitId: 2,
-    //   userId: 1,
-    //   startDate: new Date(),
-    //   endDate: new Date(),
-    //   location: "West Coast Park",
-    //   area: "B",
-    //   status: "Approved",
-    // },
-    // {
-    //   permitId: 3,
-    //   userId: 1,
-    //   startDate: new Date(),
-    //   endDate: new Date(),
-    //   location: "Changi Beach",
-    //   area: "C",
-    //   status: "Approved",
-    // },
-  ]);
+  const [permitsList, setPermitsList] = useState<CampsiteData[]>([]);
   const [editData, setEditData] = useState<CampsiteData>({
     location: "",
     area: "",
@@ -81,6 +53,7 @@ const Dashboard = () => {
         console.log("permitsList: ", permitsList);
 
         setPermitsList(permitsList);
+        setIsLoading(false);
       } catch (error) {
         console.log("error: ", error);
         toast.error(
@@ -201,11 +174,13 @@ const Dashboard = () => {
                           colSpan={6}
                           className="whitespace-nowrap px-3 py-4 text-center text-sm text-gray-500"
                         >
-                          No records found
+                          {
+                            isLoading ? 'Loading...' : 'No records found'
+                          }
                         </td>
                       </tr>
                     )}
-                    {}
+                    { }
                   </tbody>
                 </table>
               </div>
@@ -245,9 +220,8 @@ const Modal: React.FC<ModalProps> = ({ isVisible, onClose, editData }) => {
     <>
       <Backdrop isVisible={isVisible} onClose={onClose} />
       <div
-        className={`fixed inset-0 flex items-center justify-center z-50 ${
-          isVisible ? "visible" : "invisible"
-        }`}
+        className={`fixed inset-0 flex items-center justify-center z-50 ${isVisible ? "visible" : "invisible"
+          }`}
       >
         <div className="bg-white p-8 rounded shadow-lg w-3/4 h-3/4">
           <div className="modal-content">
@@ -274,9 +248,8 @@ interface BackdropProps {
 const Backdrop: React.FC<BackdropProps> = ({ isVisible, onClose }) => {
   return (
     <div
-      className={`fixed inset-0 bg-black opacity-50 z-50 transition-opacity ${
-        isVisible ? "visible" : "invisible"
-      }`}
+      className={`fixed inset-0 bg-black opacity-50 z-50 transition-opacity ${isVisible ? "visible" : "invisible"
+        }`}
       onClick={onClose}
     ></div>
   );
