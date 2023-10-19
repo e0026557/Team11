@@ -1,9 +1,10 @@
 import React, { useState } from "react";
 import axios from "axios";
+import { toast } from "react-toastify";
 
-const FeedbackForm: React.FC = () => {
-  const [subject, setSubject] = useState("");
-  const [content, setContent] = useState("");
+const FeedbackForm: React.FC<{ userId?: string }> = ({ userId }) => {
+  const [title, setTitle] = useState("");
+  const [description, setDescription] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -11,19 +12,23 @@ const FeedbackForm: React.FC = () => {
 
     try {
       setIsSubmitting(true);
-      // Make a POST request to your backend endpoint
-      await axios.post("/api/feedback", {
-        subject,
-        content,
+      const apiUrl =
+        "https://teic3anj6l.execute-api.ap-southeast-1.amazonaws.com/dev/api/feedback/AddFeedback";
+
+      await axios.post(apiUrl, {
+        userId: userId,
+        title,
+        description,
       });
 
       // Handle successful submission (e.g., show a success message)
-      console.log("Feedback submitted successfully!");
-      setSubject("");
-      setContent("");
+      toast.success("Feedback created successfully!");
+      setTitle("");
+      setDescription("");
     } catch (error) {
       // Handle errors (e.g., show an error message)
       console.error("Error submitting feedback:", error);
+      toast.error("Feedback submission failed");
     } finally {
       setIsSubmitting(false);
     }
@@ -34,28 +39,34 @@ const FeedbackForm: React.FC = () => {
       <h2 className="text-2xl font-semibold mb-4">Feedback Form</h2>
       <form onSubmit={handleSubmit}>
         <div className="mb-4">
-          <label htmlFor="subject" className="block text-sm font-medium text-gray-600">
+          <label
+            htmlFor="subject"
+            className="block text-sm font-medium text-gray-600"
+          >
             Subject
           </label>
           <input
             type="text"
             id="subject"
             className="mt-1 p-2 w-full border rounded-md"
-            value={subject}
-            onChange={(e) => setSubject(e.target.value)}
+            value={title}
+            onChange={(e) => setTitle(e.target.value)}
             required
           />
         </div>
         <div className="mb-4">
-          <label htmlFor="content" className="block text-sm font-medium text-gray-600">
+          <label
+            htmlFor="content"
+            className="block text-sm font-medium text-gray-600"
+          >
             Content
           </label>
           <textarea
             id="content"
             className="mt-1 p-2 w-full border rounded-md"
             rows={4}
-            value={content}
-            onChange={(e) => setContent(e.target.value)}
+            value={description}
+            onChange={(e) => setDescription(e.target.value)}
             required
           />
         </div>

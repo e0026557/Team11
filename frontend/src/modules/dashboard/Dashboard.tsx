@@ -11,7 +11,7 @@ interface CampsiteData {
   area: string;
   startDate: Date;
   endDate: Date;
-  status: string;
+  status?: number;
   userId: number;
   permitId: number;
 }
@@ -25,7 +25,7 @@ const Dashboard = () => {
     area: "",
     startDate: new Date(),
     endDate: new Date(),
-    status: "",
+    status: 0,
     userId: 0,
     permitId: 0,
   });
@@ -203,7 +203,7 @@ interface EditData {
   area: string;
   startDate: Date | null;
   endDate: Date | null;
-  status: string;
+  status?: number;
   userId: number;
   permitId: number;
 }
@@ -211,7 +211,7 @@ interface EditData {
 interface ModalProps {
   isVisible: boolean;
   onClose: () => void;
-  editData: EditData | null; // Assuming EditData is the type/interface for your editData object
+  editData: EditData | null; 
 }
 
 const Modal: React.FC<ModalProps> = ({ isVisible, onClose, editData }) => {

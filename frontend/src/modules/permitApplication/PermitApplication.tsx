@@ -2,42 +2,42 @@ import React, { useEffect, useState } from "react";
 import DatePicker from "react-datepicker";
 import axios from "axios";
 import "react-datepicker/dist/react-datepicker.css";
+import { toast } from "react-toastify";
 
 interface FormDataType {
-  userId: string;
+  userId: number;
   location: string;
   area: string;
   startDate: Date | null;
   endDate: Date | null;
-  status: string;
+  status?: number;
 }
 
 interface EditData {
+  userId: number;
+  permitId: number;
   location: string;
   area: string;
   startDate: Date | null;
   endDate: Date | null;
-  status: string;
-  userId: number;
-  permitId: number;
+  status?: number;
 }
 
 const PermitApplication = ({ editData }: { editData?: EditData | null }) => {
   const currentDate = new Date();
   const [formData, setFormData] = useState<FormDataType>({
-    userId: "", // You can get the user ID from your authentication system
+    userId: editData?.userId ?? 1,
     location: editData?.location ?? "No Selection",
     area: editData?.area ?? "No Selection",
     startDate: editData?.startDate ?? null,
     endDate: editData?.endDate ?? null,
-    status: "Pending", // Assuming the initial status is "Pending"
   });
 
   useEffect(() => {
     if (editData) {
       // If editData is provided, populate the form with its values
       setFormData({
-        userId: "", // You can get the user ID from your authentication system
+        userId: editData.userId, // You can get the user ID from your authentication system
         location: editData.location,
         area: editData.area,
         startDate: editData.startDate,
@@ -71,8 +71,9 @@ const PermitApplication = ({ editData }: { editData?: EditData | null }) => {
   };
 
   const handleSubmit = () => {
-    const apiUrl = "https://api.example.com/permit-applications";
-    // Make a POST request to the API using Axios
+    const apiUrl =
+      "https://smkq9xe67e.execute-api.ap-southeast-1.amazonaws.com/dev/api/permit/createpermit";
+
     axios
       .post(apiUrl, formData, {
         headers: {
@@ -82,10 +83,12 @@ const PermitApplication = ({ editData }: { editData?: EditData | null }) => {
       .then((response) => {
         // Handle success response from the API
         console.log("Success:", response.data);
+        toast.success("Permit created successfully!");
       })
       .catch((error) => {
         // Handle error here
         console.error("Error:", error);
+        toast.error("Permit application failed");
       });
   };
 
@@ -121,7 +124,7 @@ const PermitApplication = ({ editData }: { editData?: EditData | null }) => {
             Campsite Area
           </label>
           <select
-            name="campsiteArea"
+            name="area"
             onChange={handleInputChange}
             value={formData.area}
             className="mt-1 p-2 border border-gray-300 rounded-md w-1/3"
