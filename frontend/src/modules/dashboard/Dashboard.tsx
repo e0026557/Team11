@@ -4,6 +4,7 @@ import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import PermitApplication from "../permitApplication/PermitApplication";
 import axios from "axios";
+import { toast } from "react-toastify";
 
 interface CampsiteData {
   location: string;
@@ -72,12 +73,23 @@ const Dashboard = () => {
 
   useEffect(() => {
     (async () => {
-      // TODO: To uncomment after CORS issue has been resolved
-      // const permitsListResponse = await axios.get("https://zjy0euxpwa.execute-api.ap-southeast-1.amazonaws.com/dev/api/permit");
-      // const permitsList = permitsListResponse.data;
-      // console.log('permitsList: ', permitsList);
+      try {
+        const permitsListResponse = await axios.get(
+          "https://smkq9xe67e.execute-api.ap-southeast-1.amazonaws.com/dev/api/permit"
+        );
+        const permitsList = permitsListResponse.data;
+        console.log("permitsList: ", permitsList);
 
-      // setPermitsList(permitsList);
+        setPermitsList(permitsList);
+      } catch (error) {
+        console.log("error: ", error);
+        toast.error(
+          "An error occurred while retrieving records. Please try again.",
+          {
+            toastId: "dashboard-retrieve-error",
+          }
+        );
+      }
     })();
   }, []);
 
@@ -152,45 +164,48 @@ const Dashboard = () => {
                     </tr>
                   </thead>
                   <tbody className="divide-y divide-gray-200 bg-white">
-                    {
-                      permitsList.length ? (
-                        permitsList.map((permit, idx) => (
-                          <tr key={permit.permitId}>
-                            <td className="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-6">
-                              {idx + 1}
-                            </td>
-                            <td className="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-6">
-                              {permit.location}
-                            </td>
-                            <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
-                              {permit.area}
-                            </td>
-                            <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
-                              {permit.startDate.toString()}
-                            </td>
-                            <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
-                              {permit.endDate.toString()}
-                            </td>
-                            <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
-                              {permit.status}
-                            </td>
-                            <td className="relative whitespace-nowrap py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-6">
-                              <button
-                                className="text-blue-500 hover:text-blue-700 cursor-pointer"
-                                onClick={() => handleEditClick(permit)}
-                              >
-                                Edit
-                              </button>
-                            </td>
-                          </tr>
-                        ))
-                      ) : (
-                        <tr>
-                          <td colSpan={6} className="whitespace-nowrap px-3 py-4 text-center text-sm text-gray-500">No records found</td>
+                    {permitsList.length ? (
+                      permitsList.map((permit, idx) => (
+                        <tr key={permit.permitId}>
+                          <td className="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-6">
+                            {idx + 1}
+                          </td>
+                          <td className="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-6">
+                            {permit.location}
+                          </td>
+                          <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
+                            {permit.area}
+                          </td>
+                          <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
+                            {permit.startDate.toString()}
+                          </td>
+                          <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
+                            {permit.endDate.toString()}
+                          </td>
+                          <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
+                            {permit.status}
+                          </td>
+                          <td className="relative whitespace-nowrap py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-6">
+                            <button
+                              className="text-blue-500 hover:text-blue-700 cursor-pointer"
+                              onClick={() => handleEditClick(permit)}
+                            >
+                              Edit
+                            </button>
+                          </td>
                         </tr>
-                      )
-                    }
-                    { }
+                      ))
+                    ) : (
+                      <tr>
+                        <td
+                          colSpan={6}
+                          className="whitespace-nowrap px-3 py-4 text-center text-sm text-gray-500"
+                        >
+                          No records found
+                        </td>
+                      </tr>
+                    )}
+                    {}
                   </tbody>
                 </table>
               </div>
@@ -230,8 +245,9 @@ const Modal: React.FC<ModalProps> = ({ isVisible, onClose, editData }) => {
     <>
       <Backdrop isVisible={isVisible} onClose={onClose} />
       <div
-        className={`fixed inset-0 flex items-center justify-center z-50 ${isVisible ? "visible" : "invisible"
-          }`}
+        className={`fixed inset-0 flex items-center justify-center z-50 ${
+          isVisible ? "visible" : "invisible"
+        }`}
       >
         <div className="bg-white p-8 rounded shadow-lg w-3/4 h-3/4">
           <div className="modal-content">
@@ -258,8 +274,9 @@ interface BackdropProps {
 const Backdrop: React.FC<BackdropProps> = ({ isVisible, onClose }) => {
   return (
     <div
-      className={`fixed inset-0 bg-black opacity-50 z-50 transition-opacity ${isVisible ? "visible" : "invisible"
-        }`}
+      className={`fixed inset-0 bg-black opacity-50 z-50 transition-opacity ${
+        isVisible ? "visible" : "invisible"
+      }`}
       onClick={onClose}
     ></div>
   );
