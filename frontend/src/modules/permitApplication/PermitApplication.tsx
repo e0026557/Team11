@@ -103,7 +103,7 @@ const PermitApplication = ({ permitId, editData }: PermitApplicationProps) => {
       });
   };
 
-  const handleEdit = (permitId: string | undefined, formData: EditData) => {
+  const handleEdit = (permitId: number | undefined, formData: EditData) => {
     const apiUrl = `https://smkq9xe67e.execute-api.ap-southeast-1.amazonaws.com/dev/api/permit/editpermit/${permitId}`;
 
     axios
@@ -206,7 +206,7 @@ const PermitApplication = ({ permitId, editData }: PermitApplicationProps) => {
         <div className="mt-8">
           {editData ? (
             <button
-              onClick={() => handleEdit(permitId?.toString(), formData)}
+              onClick={() => handleEdit(permitId, formData)}
               className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full float-right"
             >
               Update application
