@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   SubmitErrorHandler,
   SubmitHandler,
@@ -22,6 +22,7 @@ import {
 import { isASCII, isValidEmail } from "../../shared/util/validation";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import LoadingIcon from "../../shared/spinner/LoadingIcon";
 
 type RegisterInputs = {
   username: string;
@@ -34,6 +35,7 @@ type RegisterInputs = {
 
 const Register = () => {
   const navigate = useNavigate();
+  const [isLoading, setIsLoading] = useState(false);
 
   // react-hook-form
   const form: {
@@ -81,6 +83,7 @@ const Register = () => {
   const submitForm: SubmitHandler<RegisterInputs> = async (data) => {
     console.log("submitForm: ", data);
     try {
+      setIsLoading(true);
       const registerResponse = await axios.post("https://rvdq38ozu8.execute-api.ap-southeast-1.amazonaws.com/dev/api/user/Register", data);
   
       console.log('registerResponse: ', registerResponse);
@@ -94,10 +97,12 @@ const Register = () => {
         console.log('loginResponse: ', loginResponse);
 
         sessionStorage.setItem("userId", loginResponse?.data?.userId);
+        setIsLoading(false);
         navigate('/dashboard');
       }
 
     } catch (error) {
+      setIsLoading(false);
       console.log('error: ', error);
       toast.error(
         "An error occurred while registering account. Please try again.",
@@ -347,8 +352,13 @@ const Register = () => {
               <button
                 type="submit"
                 className="flex w-full justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+                disabled={isLoading}
               >
-                Register
+                {
+                  isLoading ? (
+                    <LoadingIcon />
+                  ) : 'Register'
+                }
               </button>
             </div>
           </form>

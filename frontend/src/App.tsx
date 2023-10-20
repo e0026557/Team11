@@ -11,6 +11,7 @@ import Dashboard from './modules/dashboard/Dashboard';
 import Campsites from './modules/campsites/Campsites';
 import PermitApplication from './modules/permitApplication/PermitApplication';
 import FeedbackForm from './modules/feedback/FeedbackForm';
+import Logout from './modules/user/Logout';
 
 const App = () => {
   return (
@@ -22,6 +23,7 @@ const App = () => {
           <Route element={<Layout/>}>
             <Route index element={<Home />} />
             <Route path='/login' element={<Login />} />
+            <Route path='/logout' element={<Logout />} />
             <Route path='/register' element={<Register />} />
             <Route path='/dashboard' element={<Dashboard />} />
             <Route path='/reviews' element={<Campsites />} />
