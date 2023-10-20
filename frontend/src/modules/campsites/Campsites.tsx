@@ -2,95 +2,11 @@ import React, { useEffect, useState } from "react";
 import CardListing from "../../shared/card/CardListing";
 import { toast } from "react-toastify";
 import axios from "axios";
+import Spinner from "../../shared/spinner/Spinner";
 
 const Campsites = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [campsitesList, setCampsitesList] = useState([]);
-
-
-  // TODO: To replace sample data with data from API
-  const listing = [
-    {
-      id: 1,
-      name: "Zip Tote Basket",
-      detail: "White and black",
-      href: "#",
-      imgSrc:
-        '',
-      imgAlt:
-        "Front of zip tote bag with white canvas, black canvas straps and handle, and black zipper pulls.",
-    },
-    {
-      id: 2,
-      name: "Zip Tote Basket",
-      detail: "White and black",
-      href: "#",
-      imgSrc:
-        '',
-      imgAlt:
-        "Front of zip tote bag with white canvas, black canvas straps and handle, and black zipper pulls.",
-    },
-    {
-      id: 3,
-      name: "Zip Tote Basket",
-      detail: "White and black",
-      href: "#",
-      imgSrc:
-        '',
-      imgAlt:
-        "Front of zip tote bag with white canvas, black canvas straps and handle, and black zipper pulls.",
-    },
-    {
-      id: 4,
-      name: "Zip Tote Basket",
-      detail: "White and black",
-      href: "#",
-      imgSrc:
-        '',
-      imgAlt:
-        "Front of zip tote bag with white canvas, black canvas straps and handle, and black zipper pulls.",
-    },
-    {
-      id: 5,
-      name: "Zip Tote Basket",
-      detail: "White and black",
-      href: "#",
-      imgSrc:
-        '',
-      imgAlt:
-        "Front of zip tote bag with white canvas, black canvas straps and handle, and black zipper pulls.",
-    },
-    {
-      id: 6,
-      name: "Zip Tote Basket",
-      detail: "White and black",
-      href: "#",
-      imgSrc:
-        '',
-      imgAlt:
-        "Front of zip tote bag with white canvas, black canvas straps and handle, and black zipper pulls.",
-    },
-    {
-      id: 7,
-      name: "Zip Tote Basket",
-      detail: "White and black",
-      href: "#",
-      imgSrc:
-        '',
-      imgAlt:
-        "Front of zip tote bag with white canvas, black canvas straps and handle, and black zipper pulls.",
-    },
-    {
-      id: 8,
-      name: "Zip Tote Basket",
-      detail: "White and black",
-      href: "#",
-      imgSrc:
-        '',
-      imgAlt:
-        "Front of zip tote bag with white canvas, black canvas straps and handle, and black zipper pulls.",
-    },
-  ];
 
   useEffect(() => {
     (async () => {
@@ -119,9 +35,14 @@ const Campsites = () => {
   return (
     <>
       <div>
-        <div className="mx-auto max-w-2xl px-4 py-16 sm:px-6 sm:py-24 lg:max-w-7xl lg:px-8">
-          <div className="mx-auto max-w-2xl px-4 py-16 sm:px-6 sm:py-24 lg:max-w-7xl lg:px-8">
-            <CardListing cards={campsitesList} />
+        <div className="mx-auto max-w-2xl px-4 py-4 sm:px-6 sm:py-6 lg:max-w-7xl lg:px-8">
+          {
+            isLoading ? <Spinner /> : null
+          }
+          <div className="mx-auto max-w-2xl px-4 py-4 sm:px-6 sm:py-6 lg:max-w-7xl lg:px-8">
+            {
+              !isLoading ? <CardListing cards={campsitesList} /> : null
+            }
           </div>
         </div>
       </div>
