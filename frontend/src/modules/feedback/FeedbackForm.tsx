@@ -16,7 +16,7 @@ const FeedbackForm: React.FC<{ userId?: string }> = ({ userId }) => {
         "https://teic3anj6l.execute-api.ap-southeast-1.amazonaws.com/dev/api/feedback/AddFeedback";
 
       await axios.post(apiUrl, {
-        userId: userId,
+        userId: sessionStorage.getItem("userId"),
         title,
         description,
       });

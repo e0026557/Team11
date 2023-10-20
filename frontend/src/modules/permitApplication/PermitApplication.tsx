@@ -11,11 +11,12 @@ interface FormDataType {
   startDate: Date | null;
   endDate: Date | null;
   status?: number;
+  permitId?: number;
 }
 
 interface EditData {
   userId: number;
-  permitId: number;
+  permitId?: number;
   location: string;
   area: string;
   startDate: Date | null;
@@ -23,7 +24,12 @@ interface EditData {
   status?: number;
 }
 
-const PermitApplication = ({ editData }: { editData?: EditData | null }) => {
+interface PermitApplicationProps {
+  permitId?: number;
+  editData?: EditData;
+}
+
+const PermitApplication = ({ permitId, editData }: PermitApplicationProps) => {
   const currentDate = new Date();
   const [formData, setFormData] = useState<FormDataType>({
     userId: editData?.userId ?? 1,
@@ -31,6 +37,7 @@ const PermitApplication = ({ editData }: { editData?: EditData | null }) => {
     area: editData?.area ?? "No Selection",
     startDate: editData?.startDate ?? null,
     endDate: editData?.endDate ?? null,
+    permitId: editData?.permitId ?? 0,
   });
 
   useEffect(() => {
@@ -75,11 +82,15 @@ const PermitApplication = ({ editData }: { editData?: EditData | null }) => {
       "https://smkq9xe67e.execute-api.ap-southeast-1.amazonaws.com/dev/api/permit/createpermit";
 
     axios
-      .post(apiUrl, formData, {
-        headers: {
-          "Content-Type": "application/json",
-        },
-      })
+      .post(
+        apiUrl,
+        { ...formData, userId: sessionStorage.getItem("userId") },
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      )
       .then((response) => {
         // Handle success response from the API
         console.log("Success:", response.data);
@@ -89,6 +100,31 @@ const PermitApplication = ({ editData }: { editData?: EditData | null }) => {
         // Handle error here
         console.error("Error:", error);
         toast.error("Permit application failed");
+      });
+  };
+
+  const handleEdit = (permitId: string | undefined, formData: EditData) => {
+    const apiUrl = `https://smkq9xe67e.execute-api.ap-southeast-1.amazonaws.com/dev/api/permit/editpermit/${permitId}`;
+
+    axios
+      .put(
+        apiUrl,
+        { ...formData, userId: sessionStorage.getItem("userId") },
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      )
+      .then((response) => {
+        // Handle success response from the API
+        console.log("Success:", response.data);
+        toast.success("Permit updated successfully!");
+      })
+      .catch((error) => {
+        // Handle error here
+        console.error("Error:", error);
+        toast.error("Permit application update failed");
       });
   };
 
@@ -117,6 +153,11 @@ const PermitApplication = ({ editData }: { editData?: EditData | null }) => {
             <option value="Pasir Ris Park">Pasir Ris Park</option>
             <option value="Changi Beach">Changi Beach</option>
             <option value="West Coast Park">West Coast Park</option>
+            <option value="FarEast">FarEast</option>
+            <option value="Bedok">Bedok</option>
+            <option value="Chua Chu Kang">Chua Chu Kang</option>
+            <option value="Jurong">Jurong</option>
+            <option value="Lazarus Island">Lazarus Island</option>
           </select>
         </div>
         <div className="mt-8">
@@ -130,11 +171,10 @@ const PermitApplication = ({ editData }: { editData?: EditData | null }) => {
             className="mt-1 p-2 border border-gray-300 rounded-md w-1/3"
           >
             <option value="No Selection">No Selection</option>
-            <option value="A">Area A</option>
-            <option value="B">Area B</option>
-            <option value="C">Area C</option>
-            <option value="D">Area D</option>
-            <option value="E">Area E</option>
+            <option value="North">North</option>
+            <option value="South">South</option>
+            <option value="East">East</option>
+            <option value="West">West</option>
           </select>
         </div>
         <div className="mt-8">
@@ -164,12 +204,21 @@ const PermitApplication = ({ editData }: { editData?: EditData | null }) => {
           />
         </div>
         <div className="mt-8">
-          <button
-            onClick={handleSubmit}
-            className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full float-right"
-          >
-            Submit
-          </button>
+          {editData ? (
+            <button
+              onClick={() => handleEdit(permitId?.toString(), formData)}
+              className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full float-right"
+            >
+              Update application
+            </button>
+          ) : (
+            <button
+              onClick={handleSubmit}
+              className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full float-right"
+            >
+              Submit
+            </button>
+          )}
         </div>
       </div>
     </>
