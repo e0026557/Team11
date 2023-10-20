@@ -1,36 +1,41 @@
 import React, { useState } from "react";
-import Modal from "../modal/Modal";
+import ReviewModal from "../modal/ReviewModal";
+import { generateRandomImage } from "../util/util";
 
-export interface ICardProps {
-  id: number;
-  name: string;
-  detail: string;
-  imgSrc: string;
-  imgAlt: string;
-  href: string;
+export interface ICampsiteCardProps {
+  campsiteId: number;
+  userId: number;
+  address: string;
+  campsiteName: string;
+  size: number;
+  remarks: string;
 }
 
-const Card = (props: { card: ICardProps }) => {
+const Card = (props: { card: ICampsiteCardProps }) => {
   const [open, setOpen] = useState(false);
 
   return (
     <>
-      <div key={props.card.id}>
+      <div key={props.card.campsiteId}>
         <div className="relative">
           <div className="relative h-72 w-full overflow-hidden rounded-lg">
             <img
-              src={props.card.imgSrc}
-              alt={props.card.imgAlt}
+              src={generateRandomImage()}
+              alt="Photo of campsite"
               className="h-full w-full object-cover object-center"
             />
           </div>
           <div className="relative mt-4">
             <h3 className="text-sm font-medium text-gray-900">
-              {props.card.name}
+              {props.card.campsiteName}
             </h3>
             <p className="mt-1 text-sm text-gray-500">
-              <strong>Area: </strong>
-              {props.card.detail}
+              <strong>Address: </strong>
+              {props.card.address}
+            </p>
+            <p className="mt-1 text-sm text-gray-500">
+              <strong>Remarks: </strong>
+              {props.card.remarks}
             </p>
           </div>
           <div className="absolute inset-x-0 top-0 flex h-72 items-end justify-end overflow-hidden rounded-lg p-4">
@@ -46,11 +51,11 @@ const Card = (props: { card: ICardProps }) => {
             className="w-full rounded-md border border-transparent bg-gray-100 px-8 py-2 text-sm font-medium text-gray-900 hover:bg-gray-200"
             onClick={() => setOpen(true)}
           >
-            Reviews<span className="sr-only"> {props.card.name}</span>
+            Reviews<span className="sr-only"> {props.card.campsiteName}</span>
           </button>
         </div>
       </div>
-      <Modal open={open} setOpen={setOpen} />
+      <ReviewModal open={open} setOpen={setOpen} />
     </>
   );
 };

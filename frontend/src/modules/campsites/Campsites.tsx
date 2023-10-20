@@ -1,7 +1,13 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import CardListing from "../../shared/card/CardListing";
+import { toast } from "react-toastify";
+import axios from "axios";
 
 const Campsites = () => {
+  const [isLoading, setIsLoading] = useState(true);
+  const [campsitesList, setCampsitesList] = useState([]);
+
+
   // TODO: To replace sample data with data from API
   const listing = [
     {
@@ -10,7 +16,7 @@ const Campsites = () => {
       detail: "White and black",
       href: "#",
       imgSrc:
-        "https://images.unsplash.com/photo-1537225228614-56cc3556d7ed?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTd8fGNhbXBpbmd8ZW58MHx8MHx8fDA%3D&auto=format&fit=crop&w=500&q=60",
+        '',
       imgAlt:
         "Front of zip tote bag with white canvas, black canvas straps and handle, and black zipper pulls.",
     },
@@ -20,7 +26,7 @@ const Campsites = () => {
       detail: "White and black",
       href: "#",
       imgSrc:
-        "https://images.unsplash.com/photo-1537225228614-56cc3556d7ed?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTd8fGNhbXBpbmd8ZW58MHx8MHx8fDA%3D&auto=format&fit=crop&w=500&q=60",
+        '',
       imgAlt:
         "Front of zip tote bag with white canvas, black canvas straps and handle, and black zipper pulls.",
     },
@@ -30,7 +36,7 @@ const Campsites = () => {
       detail: "White and black",
       href: "#",
       imgSrc:
-        "https://images.unsplash.com/photo-1537225228614-56cc3556d7ed?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTd8fGNhbXBpbmd8ZW58MHx8MHx8fDA%3D&auto=format&fit=crop&w=500&q=60",
+        '',
       imgAlt:
         "Front of zip tote bag with white canvas, black canvas straps and handle, and black zipper pulls.",
     },
@@ -40,7 +46,7 @@ const Campsites = () => {
       detail: "White and black",
       href: "#",
       imgSrc:
-        "https://images.unsplash.com/photo-1537225228614-56cc3556d7ed?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTd8fGNhbXBpbmd8ZW58MHx8MHx8fDA%3D&auto=format&fit=crop&w=500&q=60",
+        '',
       imgAlt:
         "Front of zip tote bag with white canvas, black canvas straps and handle, and black zipper pulls.",
     },
@@ -50,7 +56,7 @@ const Campsites = () => {
       detail: "White and black",
       href: "#",
       imgSrc:
-        "https://images.unsplash.com/photo-1537225228614-56cc3556d7ed?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTd8fGNhbXBpbmd8ZW58MHx8MHx8fDA%3D&auto=format&fit=crop&w=500&q=60",
+        '',
       imgAlt:
         "Front of zip tote bag with white canvas, black canvas straps and handle, and black zipper pulls.",
     },
@@ -60,7 +66,7 @@ const Campsites = () => {
       detail: "White and black",
       href: "#",
       imgSrc:
-        "https://images.unsplash.com/photo-1537225228614-56cc3556d7ed?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTd8fGNhbXBpbmd8ZW58MHx8MHx8fDA%3D&auto=format&fit=crop&w=500&q=60",
+        '',
       imgAlt:
         "Front of zip tote bag with white canvas, black canvas straps and handle, and black zipper pulls.",
     },
@@ -70,7 +76,7 @@ const Campsites = () => {
       detail: "White and black",
       href: "#",
       imgSrc:
-        "https://images.unsplash.com/photo-1537225228614-56cc3556d7ed?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTd8fGNhbXBpbmd8ZW58MHx8MHx8fDA%3D&auto=format&fit=crop&w=500&q=60",
+        '',
       imgAlt:
         "Front of zip tote bag with white canvas, black canvas straps and handle, and black zipper pulls.",
     },
@@ -80,18 +86,42 @@ const Campsites = () => {
       detail: "White and black",
       href: "#",
       imgSrc:
-        "https://images.unsplash.com/photo-1537225228614-56cc3556d7ed?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTd8fGNhbXBpbmd8ZW58MHx8MHx8fDA%3D&auto=format&fit=crop&w=500&q=60",
+        '',
       imgAlt:
         "Front of zip tote bag with white canvas, black canvas straps and handle, and black zipper pulls.",
     },
   ];
+
+  useEffect(() => {
+    (async () => {
+      try {
+        setIsLoading(true);
+        const campsitesResponse = await axios.get('https://922n74bivg.execute-api.ap-southeast-1.amazonaws.com/dev/api/campsites/SearchCampsites');
+        console.log('campsiteResponse: ', campsitesResponse);
+
+        if (campsitesResponse?.data) {
+          setCampsitesList(campsitesResponse?.data);
+        }
+        setIsLoading(false);
+      } catch (error) {
+        setIsLoading(false);
+        console.log('error: ', error);
+        toast.error(
+          "An error occurred while retrieving campsites. Please try again.",
+          {
+            toastId: "campsites-error",
+          }
+        );
+      }
+    })();
+  }, []);
 
   return (
     <>
       <div>
         <div className="mx-auto max-w-2xl px-4 py-16 sm:px-6 sm:py-24 lg:max-w-7xl lg:px-8">
           <div className="mx-auto max-w-2xl px-4 py-16 sm:px-6 sm:py-24 lg:max-w-7xl lg:px-8">
-            <CardListing cards={listing} />
+            <CardListing cards={campsitesList} />
           </div>
         </div>
       </div>
