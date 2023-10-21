@@ -23,10 +23,13 @@ phases:
       - echo Entered the post_build phase...
       - echo Build completed on `date`
 
+  test:
+    commands:
+      - npx cypress run
+
 artifacts:
   # include all files required to run application
   # notably excluded is node_modules, as this will cause overwrite error on deploy
   files:
-    - '**/*'
-  base-directory: 'frontend/build'
-  
+    - "**/*"
+  base-directory: "frontend/build"
