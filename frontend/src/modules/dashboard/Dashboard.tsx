@@ -52,7 +52,7 @@ const Dashboard = () => {
     (async () => {
       try {
         const permitsListResponse = await axios.get(
-          "https://smkq9xe67e.execute-api.ap-southeast-1.amazonaws.com/dev/api/permit"
+          "https://pjwui6c4nj.execute-api.ap-southeast-1.amazonaws.com/dev/permitapi/permit"
         );
         const permitsList = permitsListResponse.data;
         console.log("permitsList: ", permitsList);
@@ -219,9 +219,10 @@ interface ModalProps {
   isVisible: boolean;
   onClose: () => void;
   editData: EditData;
+  setIsModalVisible?: any;
 }
 
-const Modal: React.FC<ModalProps> = ({ isVisible, onClose, editData }) => {
+const Modal: React.FC<ModalProps> = ({ isVisible, onClose, editData, setIsModalVisible }) => {
   return (
     // Modal implementation using Tailwind CSS4
     <>
@@ -244,6 +245,7 @@ const Modal: React.FC<ModalProps> = ({ isVisible, onClose, editData }) => {
             <PermitApplication
               editData={editData}
               permitId={editData?.permitId}
+              setIsModalVisible={setIsModalVisible}
             />
           </div>
         </div>

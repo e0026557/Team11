@@ -85,7 +85,7 @@ const Register = () => {
     try {
       setIsLoading(true);
       const registerResponse = await axios.post(
-        "https://rvdq38ozu8.execute-api.ap-southeast-1.amazonaws.com/dev/api/user/Register",
+        "https://pjwui6c4nj.execute-api.ap-southeast-1.amazonaws.com/dev/userapi/user/Register",
         data
       );
 
@@ -93,7 +93,7 @@ const Register = () => {
 
       if (registerResponse.status === 200) {
         const loginResponse = await axios.post(
-          "https://rvdq38ozu8.execute-api.ap-southeast-1.amazonaws.com/dev/api/user/Login",
+          "hhttps://pjwui6c4nj.execute-api.ap-southeast-1.amazonaws.com/dev/userapi/user/Login",
           {
             email: registerResponse?.data?.email,
             password: registerResponse?.data?.password,

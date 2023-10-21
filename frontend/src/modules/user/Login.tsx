@@ -52,7 +52,7 @@ const Login = () => {
     try {
       setIsLoading(true);
       const loginResponse = await axios.post(
-        "https://rvdq38ozu8.execute-api.ap-southeast-1.amazonaws.com/dev/api/user/Login",
+        "https://pjwui6c4nj.execute-api.ap-southeast-1.amazonaws.com/dev/userapi/user/Login",
         data
       );
 

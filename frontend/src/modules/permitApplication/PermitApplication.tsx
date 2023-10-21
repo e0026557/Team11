@@ -27,9 +27,14 @@ interface EditData {
 interface PermitApplicationProps {
   permitId?: number;
   editData?: EditData;
+  setIsModalVisible?: any;
 }
 
-const PermitApplication = ({ permitId, editData }: PermitApplicationProps) => {
+const PermitApplication = ({
+  permitId,
+  editData,
+  setIsModalVisible,
+}: PermitApplicationProps) => {
   const currentDate = new Date();
   const [formData, setFormData] = useState<FormDataType>({
     userId: editData?.userId ?? 1,
@@ -79,7 +84,7 @@ const PermitApplication = ({ permitId, editData }: PermitApplicationProps) => {
 
   const handleSubmit = () => {
     const apiUrl =
-      "https://smkq9xe67e.execute-api.ap-southeast-1.amazonaws.com/dev/api/permit/createpermit";
+      "https://pjwui6c4nj.execute-api.ap-southeast-1.amazonaws.com/dev/permitapi/createpermit";
 
     axios
       .post(
@@ -104,12 +109,12 @@ const PermitApplication = ({ permitId, editData }: PermitApplicationProps) => {
   };
 
   const handleEdit = (permitId: number | undefined, formData: EditData) => {
-    const apiUrl = `https://smkq9xe67e.execute-api.ap-southeast-1.amazonaws.com/dev/api/permit/editpermit/${permitId}`;
+    const apiUrl = `https://pjwui6c4nj.execute-api.ap-southeast-1.amazonaws.com/dev/permitapi/editpermit/${permitId}`;
 
     axios
       .put(
         apiUrl,
-        { ...formData, userId: sessionStorage.getItem("userId") },
+        { ...formData, userId: sessionStorage.getItem("userId"), id: permitId },
         {
           headers: {
             "Content-Type": "application/json",
@@ -119,6 +124,7 @@ const PermitApplication = ({ permitId, editData }: PermitApplicationProps) => {
       .then((response) => {
         // Handle success response from the API
         console.log("Success:", response.data);
+        setIsModalVisible(false);
         toast.success("Permit updated successfully!");
       })
       .catch((error) => {
