@@ -11,6 +11,21 @@ phases:
       - cd frontend
       - npm install
 
+  pre_build:
+    commands:
+      - export COMMIT_INFO_BRANCH="$(git rev-parse HEAD | xargs git name-rev |
+        cut -d' ' -f2 | sed 's/remotes\/origin\///g')"
+      - export COMMIT_INFO_MESSAGE="$(git log -1 --pretty=%B)"
+      - export COMMIT_INFO_EMAIL="$(git log -1 --pretty=%ae)"
+      - export COMMIT_INFO_AUTHOR="$(git log -1 --pretty=%an)"
+      - export COMMIT_INFO_SHA="$(git log -1 --pretty=%H)"
+      - export COMMIT_INFO_REMOTE="$(git config --get remote.origin.url)"
+      - npm ci
+      - npm run cy:verify
+      - npm run cy:info
+      - npm run start:ci &
+      - npx cypress run --record
+
   build:
     commands:
       # run build script
