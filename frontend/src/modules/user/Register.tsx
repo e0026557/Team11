@@ -20,7 +20,7 @@ import {
   requiredInputErrorMsg,
 } from "../../shared/util/error-message.util";
 import { isASCII, isValidEmail } from "../../shared/util/validation";
-import axios from "axios";
+import axios, { AxiosError } from "axios";
 import { useNavigate } from "react-router-dom";
 import LoadingIcon from "../../shared/spinner/LoadingIcon";
 
@@ -62,11 +62,11 @@ const Register = () => {
   const ROLES = [
     {
       roleId: 0,
-      roleDescription: 'Campsite Permit Applicant'
+      roleDescription: "Campsite Permit Applicant",
     },
     {
       roleId: 1,
-      roleDescription: 'Campsite Admin'
+      roleDescription: "Campsite Admin",
     },
   ];
 
@@ -76,7 +76,7 @@ const Register = () => {
         <option value={role.roleId} key={role.roleId}>
           {role.roleDescription}
         </option>
-      )
+      );
     });
   };
 
@@ -84,28 +84,35 @@ const Register = () => {
     console.log("submitForm: ", data);
     try {
       setIsLoading(true);
-      const registerResponse = await axios.post("https://rvdq38ozu8.execute-api.ap-southeast-1.amazonaws.com/dev/api/user/Register", data);
-  
-      console.log('registerResponse: ', registerResponse);
+      const registerResponse = await axios.post(
+        "https://rvdq38ozu8.execute-api.ap-southeast-1.amazonaws.com/dev/api/user/Register",
+        data
+      );
+
+      console.log("registerResponse: ", registerResponse);
 
       if (registerResponse.status === 200) {
-        const loginResponse = await axios.post("https://rvdq38ozu8.execute-api.ap-southeast-1.amazonaws.com/dev/api/user/Login", {
-          email: registerResponse?.data?.email,
-          password: registerResponse?.data?.password
-        });
+        const loginResponse = await axios.post(
+          "https://rvdq38ozu8.execute-api.ap-southeast-1.amazonaws.com/dev/api/user/Login",
+          {
+            email: registerResponse?.data?.email,
+            password: registerResponse?.data?.password,
+          }
+        );
 
-        console.log('loginResponse: ', loginResponse);
+        console.log("loginResponse: ", loginResponse);
 
         sessionStorage.setItem("userId", loginResponse?.data?.userId);
         setIsLoading(false);
-        navigate('/dashboard');
+        navigate("/dashboard");
       }
-
-    } catch (error) {
+    } catch (error: any) {
       setIsLoading(false);
-      console.log('error: ', error);
+      console.log("error: ", error);
+      const errorMessage = error?.response?.data;
       toast.error(
-        "An error occurred while registering account. Please try again.",
+        errorMessage ||
+          "An error occurred while registering account. Please try again.",
         {
           toastId: "register-error",
         }
@@ -226,7 +233,7 @@ const Register = () => {
                   })}
                   className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                 >
-                  <option value=''>Please select role</option>
+                  <option value="">Please select role</option>
                   {renderRoleOptions()}
                 </select>
                 {form.formState.errors?.role ? (
@@ -354,11 +361,7 @@ const Register = () => {
                 className="flex w-full justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
                 disabled={isLoading}
               >
-                {
-                  isLoading ? (
-                    <LoadingIcon />
-                  ) : 'Register'
-                }
+                {isLoading ? <LoadingIcon /> : "Register"}
               </button>
             </div>
           </form>
