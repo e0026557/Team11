@@ -51,8 +51,9 @@ const Dashboard = () => {
   useEffect(() => {
     (async () => {
       try {
+        setIsLoading(true);
         const permitsListResponse = await axios.get(
-          "https://smkq9xe67e.execute-api.ap-southeast-1.amazonaws.com/dev/api/permit"
+          "https://pjwui6c4nj.execute-api.ap-southeast-1.amazonaws.com/dev/permitapi/permit"
         );
         const permitsList = permitsListResponse.data;
         console.log("permitsList: ", permitsList);
@@ -60,6 +61,7 @@ const Dashboard = () => {
         setPermitsList(permitsList);
         setIsLoading(false);
       } catch (error) {
+        setIsLoading(false);
         console.log("error: ", error);
         toast.error(
           "An error occurred while retrieving records. Please try again.",

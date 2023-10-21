@@ -22,7 +22,11 @@ export default function Navbar() {
       href: "/dashboard",
       current: pathname === "/dashboard",
     },
-    { name: "Reviews", href: "/reviews", current: pathname === "/reviews" },
+    {
+      name: "Campsites",
+      href: "/campsites",
+      current: pathname === "/campsites",
+    },
     { name: "Feedback", href: "/feedback", current: pathname === "/feedback" },
   ];
 
