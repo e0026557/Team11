@@ -10,6 +10,7 @@ phases:
       - echo Entered the install phase...
       - cd frontend
       - npm install
+      - dnf install -y xorg-x11-server-Xvfb gtk3-devel nss alsa-lib
 
   build:
     commands:
