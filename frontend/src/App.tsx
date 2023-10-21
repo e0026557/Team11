@@ -13,6 +13,7 @@ import PermitApplication from "./modules/permitApplication/PermitApplication";
 import FeedbackForm from "./modules/feedback/FeedbackForm";
 import Logout from "./modules/user/Logout";
 import CampsiteDetail from "./modules/campsites/CampsiteDetail";
+import Profile from "./modules/profile/Profile";
 
 const App = () => {
   return (
@@ -27,9 +28,11 @@ const App = () => {
             <Route path="/logout" element={<Logout />} />
             <Route path="/register" element={<Register />} />
             <Route path="/dashboard" element={<Dashboard />} />
+            <Route path="/reviews" element={<Campsites />} />
+            <Route path="/feedback" element={<FeedbackForm />} />
             <Route path="/campsites" element={<Campsites />} />
             <Route path="/campsites/:campsiteId" element={<CampsiteDetail />} />
-            <Route path="/feedback" element={<FeedbackForm />} />
+            <Route path="/profile" element={<Profile />} />
             <Route path="/apply/*" element={<PermitApplication />} />
             <Route path="*" element={<ErrorPage />} />
           </Route>

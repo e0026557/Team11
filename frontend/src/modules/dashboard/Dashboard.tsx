@@ -221,9 +221,10 @@ interface ModalProps {
   isVisible: boolean;
   onClose: () => void;
   editData: EditData;
+  setIsModalVisible?: any;
 }
 
-const Modal: React.FC<ModalProps> = ({ isVisible, onClose, editData }) => {
+const Modal: React.FC<ModalProps> = ({ isVisible, onClose, editData, setIsModalVisible }) => {
   return (
     // Modal implementation using Tailwind CSS4
     <>
@@ -246,6 +247,7 @@ const Modal: React.FC<ModalProps> = ({ isVisible, onClose, editData }) => {
             <PermitApplication
               editData={editData}
               permitId={editData?.permitId}
+              setIsModalVisible={setIsModalVisible}
             />
           </div>
         </div>
