@@ -22,10 +22,9 @@ phases:
     commands:
       - echo Entered the post_build phase...
       - echo Build completed on `date`
-
-  test:
-    commands:
+      - echo Running cypress test
       - npx cypress run
+      - echo Test completed on `date`
 
 artifacts:
   # include all files required to run application
