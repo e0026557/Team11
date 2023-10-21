@@ -21,8 +21,8 @@ phases:
       - export COMMIT_INFO_SHA="$(git log -1 --pretty=%H)"
       - export COMMIT_INFO_REMOTE="$(git config --get remote.origin.url)"
       - npm ci
-      - npm run cypress verify
-      - npm run cypress info
+      - npx cypress verify
+      - npx cypress info
       - npm run start:ci &
       - npx cypress run --record
 
