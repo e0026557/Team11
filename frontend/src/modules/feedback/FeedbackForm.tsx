@@ -1,11 +1,13 @@
 import React, { useState } from "react";
 import axios from "axios";
 import { toast } from "react-toastify";
+import { useNavigate } from "react-router-dom";
 
 const FeedbackForm: React.FC<{ userId?: string }> = ({ userId }) => {
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const navigate = useNavigate();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -13,7 +15,7 @@ const FeedbackForm: React.FC<{ userId?: string }> = ({ userId }) => {
     try {
       setIsSubmitting(true);
       const apiUrl =
-        "https://pjwui6c4nj.execute-api.ap-southeast-1.amazonaws.com/dev/feedbackapi/AddFeedback";
+        "https://pjwui6c4nj.execute-api.ap-southeast-1.amazonaws.com/dev/feedbackapi/feedback/AddFeedback";
 
       await axios.post(apiUrl, {
         userId: sessionStorage.getItem("userId"),
@@ -25,6 +27,7 @@ const FeedbackForm: React.FC<{ userId?: string }> = ({ userId }) => {
       toast.success("Feedback created successfully!");
       setTitle("");
       setDescription("");
+      navigate("/dashboard");
     } catch (error) {
       // Handle errors (e.g., show an error message)
       console.error("Error submitting feedback:", error);
