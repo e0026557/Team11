@@ -15,10 +15,10 @@ function classNames(...classes: string[]) {
 const CampsiteDetail = () => {
   const navigate = useNavigate();
   const campsiteId = useParams().campsiteId;
-  const [campsiteDetails, setCampsiteDetails] = useState({
-    name: "Campsite",
-    description:
-      "Nestled in a pristine natural setting, our campsite offers a tranquil escape from the hustle and bustle of everyday life. Surrounded by lush greenery and towering trees, it provides a serene space for outdoor enthusiasts to set up tents or RVs. Campfires, picnic tables, and clean, modern facilities ensure a comfortable and memorable camping experience. Whether you're seeking adventure or simply a peaceful retreat, our campsite offers the perfect backdrop for enjoying nature and creating lasting memories with family and friends.",
+  const [isLoading, setIsLoading] = useState(false);
+  const [campsiteDetails, setCampsiteDetails] = useState<any>({
+    campsiteName: "Campsite",
+    description: "Campsite description",
   });
 
   const reviews = {
@@ -29,14 +29,31 @@ const CampsiteDetail = () => {
   useEffect(() => {
     (async () => {
       try {
-        // TODO: Add axios call to retrieve campsite details and ratings
-        // const campsiteDetailsResponse = await axios.post();
+        setIsLoading(true);
+        const campsitesResponse = await axios.get(
+          "https://pjwui6c4nj.execute-api.ap-southeast-1.amazonaws.com/dev/campsitesapi/campsites/SearchCampsites"
+        );
+        console.log("campsiteResponse: ", campsitesResponse);
+
+        if (campsitesResponse?.data) {
+          const campsitesList: any[] = campsitesResponse?.data;
+          const filteredCampsite = campsitesList.filter((campsite) => {
+            return campsite.campsiteId.toString() === campsiteId;
+          })[0];
+          console.log("filtered campsite: ", filteredCampsite);
+          setCampsiteDetails({
+            ...campsiteDetails,
+            ...filteredCampsite,
+          });
+        }
+        setIsLoading(false);
       } catch (error) {
+        setIsLoading(false);
         console.log("error: ", error);
         toast.error(
           "An error occurred while retrieving campsite details. Please try again.",
           {
-            toastId: "campsiteDetails-retrieve-error",
+            toastId: "campsites-error",
           }
         );
       }
@@ -50,7 +67,7 @@ const CampsiteDetail = () => {
         <div className="lg:max-w-lg lg:self-end">
           <div className="mt-4">
             <h1 className="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">
-              {campsiteDetails.name}
+              {campsiteDetails.campsiteName}
             </h1>
           </div>
 
@@ -81,8 +98,25 @@ const CampsiteDetail = () => {
               </div>
             </div>
 
+            {/* Campsite Size */}
             <div className="mt-4 space-y-6">
               <p className="text-base text-gray-500">
+                <strong>Campsite capacity:</strong>
+                <br /> {campsiteDetails.size}
+              </p>
+            </div>
+            {/* Campsite Address */}
+            <div className="mt-4 space-y-6">
+              <p className="text-base text-gray-500">
+                <strong>Address:</strong>
+                <br /> {campsiteDetails.address}
+              </p>
+            </div>
+            {/* Campsite Description */}
+            <div className="mt-4 space-y-6">
+              <p className="text-base text-gray-500">
+                <strong>Description: </strong>
+                <br />
                 {campsiteDetails.description}
               </p>
             </div>
@@ -114,7 +148,7 @@ const CampsiteDetail = () => {
               <button
                 type="button"
                 className="flex w-50 items-center justify-center rounded-md border border-transparent bg-indigo-600 px-4 py-2 text-base font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 focus:ring-offset-gray-50"
-                onClick={() => navigate("/apply")}
+                onClick={() => navigate(`/apply/${campsiteDetails.campsiteId}`)}
               >
                 Apply permit
               </button>
