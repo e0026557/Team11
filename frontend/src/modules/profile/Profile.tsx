@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { toast } from "react-toastify";
+import Spinner from "../../shared/spinner/Spinner";
 
 const Profile: React.FC = () => {
+  const [isLoading, setIsLoading] = useState(false);
   const [userData, setUserData] = useState({
     id: 0,
     name: "",
@@ -14,6 +16,7 @@ const Profile: React.FC = () => {
 
   useEffect(() => {
     const fetchData = async () => {
+      setIsLoading(true);
       const userId: string | null = sessionStorage.getItem("userId");
       if (userId !== null) {
         const userIdNumber: number = parseInt(userId, 10);
@@ -28,6 +31,7 @@ const Profile: React.FC = () => {
       } else {
         console.log("userId is null");
       }
+      setIsLoading(false);
     };
 
     fetchData();
@@ -53,68 +57,74 @@ const Profile: React.FC = () => {
   };
 
   return (
-    <div className="container mx-auto mt-8">
-      <h1 className="text-3xl font-semibold mb-4">My Profile</h1>
-      <div className="mb-4 flex flex-col">
-        <div className="flex items-center mb-2">
-          <label className="text-gray-600 font-bold mr-2">Name:</label>
-          {editMode ? (
-            <input
-              type="text"
-              name="name"
-              value={userData.name}
-              onChange={handleInputChange}
-              className="border p-2"
-            />
-          ) : (
-            <span>{userData.name}</span>
-          )}
-        </div>
-        <div className="flex items-center mb-2">
-          <label className="text-gray-600 font-bold mr-2">Username:</label>
-          {editMode ? (
-            <input
-              type="text"
-              name="username"
-              value={userData.username}
-              onChange={handleInputChange}
-              className="border p-2"
-            />
-          ) : (
-            <span>{userData.username}</span>
-          )}
-        </div>
-        <div className="flex items-center mb-2">
-          <label className="text-gray-600 font-bold mr-2">Email:</label>
-          {editMode ? (
-            <input
-              type="email"
-              name="email"
-              value={userData.email}
-              onChange={handleInputChange}
-              className="border p-2"
-            />
-          ) : (
-            <span>{userData.email}</span>
-          )}
-        </div>
-      </div>
-      {editMode ? (
-        <button
-          onClick={handleUpdateClick}
-          className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
-        >
-          Update
-        </button>
-      ) : (
-        <button
-          onClick={() => setEditMode(true)}
-          className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
-        >
-          Edit Details
-        </button>
-      )}
-    </div>
+    <>
+      {
+        isLoading ? <Spinner /> : (
+          <div className="container mx-auto mt-8">
+            <h1 className="text-3xl font-semibold mb-4">My Profile</h1>
+            <div className="mb-4 flex flex-col">
+              <div className="flex items-center mb-2">
+                <label className="text-gray-600 font-bold mr-2">Name:</label>
+                {editMode ? (
+                  <input
+                    type="text"
+                    name="name"
+                    value={userData.name}
+                    onChange={handleInputChange}
+                    className="border p-2"
+                  />
+                ) : (
+                  <span>{userData.name}</span>
+                )}
+              </div>
+              <div className="flex items-center mb-2">
+                <label className="text-gray-600 font-bold mr-2">Username:</label>
+                {editMode ? (
+                  <input
+                    type="text"
+                    name="username"
+                    value={userData.username}
+                    onChange={handleInputChange}
+                    className="border p-2"
+                  />
+                ) : (
+                  <span>{userData.username}</span>
+                )}
+              </div>
+              <div className="flex items-center mb-2">
+                <label className="text-gray-600 font-bold mr-2">Email:</label>
+                {editMode ? (
+                  <input
+                    type="email"
+                    name="email"
+                    value={userData.email}
+                    onChange={handleInputChange}
+                    className="border p-2"
+                  />
+                ) : (
+                  <span>{userData.email}</span>
+                )}
+              </div>
+            </div>
+            {editMode ? (
+              <button
+                onClick={handleUpdateClick}
+                className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+              >
+                Update
+              </button>
+            ) : (
+              <button
+                onClick={() => setEditMode(true)}
+                className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+              >
+                Edit Details
+              </button>
+            )}
+          </div>
+        )
+      }
+    </>
   );
 };
 
