@@ -1,0 +1,3 @@
+[submodule "backend/CPAS-microservices"]
+	path = backend/CPAS-microservices
+	url = https://github.com/qinyeeLisa/CPAS-microservices.git
