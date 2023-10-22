@@ -3,6 +3,7 @@ import DatePicker from "react-datepicker";
 import axios from "axios";
 import "react-datepicker/dist/react-datepicker.css";
 import { toast } from "react-toastify";
+import { useNavigate } from "react-router-dom";
 
 interface FormDataType {
   userId: number;
@@ -44,6 +45,8 @@ const PermitApplication = ({
     endDate: editData?.endDate ?? null,
     permitId: editData?.permitId ?? 0,
   });
+
+  const navigate = useNavigate();
 
   useEffect(() => {
     if (editData) {
@@ -100,6 +103,7 @@ const PermitApplication = ({
         // Handle success response from the API
         console.log("Success:", response.data);
         toast.success("Permit created successfully!");
+        navigate("/dashboard");
       })
       .catch((error) => {
         // Handle error here
@@ -126,6 +130,7 @@ const PermitApplication = ({
         console.log("Success:", response.data);
         setIsModalVisible(false);
         toast.success("Permit updated successfully!");
+        window.location.reload();
       })
       .catch((error) => {
         // Handle error here
