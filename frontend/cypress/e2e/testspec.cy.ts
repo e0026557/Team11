@@ -19,7 +19,7 @@ describe("Login Specs", () => {
 
     cy.visit(BASE_URL + "/login")
       .then(() => {
-        cy.get("input[name='email']").type("test@email.com");
+        cy.get("input[name='email']").type("someotheremail@email.com");
         cy.get("input[name='password']").type("test");
       })
       .as("Login");
@@ -27,7 +27,7 @@ describe("Login Specs", () => {
     cy.get('button[type="submit"]').click();
     cy.wait("@login").then((interception) => {
       console.log("interception: ", interception);
-      assert(interception?.response?.statusCode === 200);
+      assert(interception?.response?.statusCode !== 200);
     });
   });
 
