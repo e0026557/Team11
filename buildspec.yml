@@ -10,6 +10,7 @@ phases:
       - echo Entered the install phase...
       - cd frontend
       - npm install
+      - dnf install -y xorg-x11-server-Xvfb gtk3-devel nss alsa-lib
 
   build:
     commands:
@@ -22,11 +23,11 @@ phases:
     commands:
       - echo Entered the post_build phase...
       - echo Build completed on `date`
+      - npx cypress run
 
 artifacts:
   # include all files required to run application
   # notably excluded is node_modules, as this will cause overwrite error on deploy
   files:
-    - '**/*'
-  base-directory: 'frontend/build'
-  
+    - "**/*"
+  base-directory: "frontend/build"

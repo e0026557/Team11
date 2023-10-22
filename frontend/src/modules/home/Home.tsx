@@ -1,5 +1,4 @@
 import React, { useEffect } from "react";
-import CardListing from "../../shared/card/CardListing";
 import { useNavigate } from "react-router-dom";
 
 const Home = () => {

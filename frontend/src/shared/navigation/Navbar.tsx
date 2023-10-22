@@ -1,6 +1,11 @@
 import { Fragment, useEffect, useState } from "react";
 import { Disclosure, Menu, Transition } from "@headlessui/react";
-import { Bars3Icon, XMarkIcon, UserIcon, BellIcon } from "@heroicons/react/24/outline";
+import {
+  Bars3Icon,
+  XMarkIcon,
+  UserIcon,
+  BellIcon,
+} from "@heroicons/react/24/outline";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 
 function classNames(...classes: string[]) {
@@ -17,7 +22,11 @@ export default function Navbar() {
       href: "/dashboard",
       current: pathname === "/dashboard",
     },
-    { name: "Reviews", href: "/reviews", current: pathname === "/reviews" },
+    {
+      name: "Campsites",
+      href: "/campsites",
+      current: pathname === "/campsites",
+    },
     { name: "Feedback", href: "/feedback", current: pathname === "/feedback" },
   ];
 
@@ -85,7 +94,7 @@ export default function Navbar() {
                   <>
                     <button
                       type="button"
-                      className="relative rounded-full bg-gray-800 p-1 text-gray-400 hover:text-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800"
+                      className="me-3 px-2 relative rounded-full bg-gray-800 p-1 text-gray-400 hover:text-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800"
                       onClick={() => navigate("/login")}
                     >
                       Login
@@ -93,7 +102,7 @@ export default function Navbar() {
 
                     <button
                       type="button"
-                      className="relative rounded-full bg-gray-800 p-1 text-gray-400 hover:text-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800"
+                      className="px-2 relative rounded-full bg-gray-800 p-1 text-gray-400 hover:text-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800"
                       onClick={() => navigate("/register")}
                     >
                       Register

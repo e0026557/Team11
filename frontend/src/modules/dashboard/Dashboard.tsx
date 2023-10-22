@@ -5,6 +5,7 @@ import { useNavigate } from "react-router-dom";
 import PermitApplication from "../permitApplication/PermitApplication";
 import axios from "axios";
 import { toast } from "react-toastify";
+import { faTimes } from "@fortawesome/free-solid-svg-icons";
 
 interface CampsiteData {
   location: string;
@@ -33,7 +34,11 @@ const Dashboard = () => {
 
   const handleEditClick = (rowData: CampsiteData) => {
     console.log("Editing:", rowData);
-    setEditData((prev) => ({ ...rowData }));
+    setEditData((prev) => ({
+      ...rowData,
+      startDate: new Date(rowData.startDate),
+      endDate: new Date(rowData.endDate),
+    }));
     setIsModalVisible(true);
   };
 
@@ -46,8 +51,9 @@ const Dashboard = () => {
   useEffect(() => {
     (async () => {
       try {
+        setIsLoading(true);
         const permitsListResponse = await axios.get(
-          "https://smkq9xe67e.execute-api.ap-southeast-1.amazonaws.com/dev/api/permit"
+          "https://pjwui6c4nj.execute-api.ap-southeast-1.amazonaws.com/dev/permitapi/permit"
         );
         const permitsList = permitsListResponse.data;
         console.log("permitsList: ", permitsList);
@@ -55,6 +61,7 @@ const Dashboard = () => {
         setPermitsList(permitsList);
         setIsLoading(false);
       } catch (error) {
+        setIsLoading(false);
         console.log("error: ", error);
         toast.error(
           "An error occurred while retrieving records. Please try again.",
@@ -150,10 +157,14 @@ const Dashboard = () => {
                             {permit.area}
                           </td>
                           <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
-                            {permit.startDate.toString()}
+                            {permit.startDate
+                              ? new Date(permit.startDate).toLocaleString()
+                              : "N/A"}
                           </td>
                           <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
-                            {permit.endDate.toString()}
+                            {permit.endDate
+                              ? new Date(permit.endDate).toLocaleString()
+                              : "N/A"}
                           </td>
                           <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
                             {permit.status}
@@ -174,13 +185,11 @@ const Dashboard = () => {
                           colSpan={6}
                           className="whitespace-nowrap px-3 py-4 text-center text-sm text-gray-500"
                         >
-                          {
-                            isLoading ? 'Loading...' : 'No records found'
-                          }
+                          {isLoading ? "Loading..." : "No records found"}
                         </td>
                       </tr>
                     )}
-                    { }
+                    {}
                   </tbody>
                 </table>
               </div>
@@ -211,28 +220,35 @@ interface EditData {
 interface ModalProps {
   isVisible: boolean;
   onClose: () => void;
-  editData: EditData | null; 
+  editData: EditData;
+  setIsModalVisible?: any;
 }
 
-const Modal: React.FC<ModalProps> = ({ isVisible, onClose, editData }) => {
+const Modal: React.FC<ModalProps> = ({ isVisible, onClose, editData, setIsModalVisible }) => {
   return (
     // Modal implementation using Tailwind CSS4
     <>
       <Backdrop isVisible={isVisible} onClose={onClose} />
       <div
-        className={`fixed inset-0 flex items-center justify-center z-50 ${isVisible ? "visible" : "invisible"
-          }`}
+        className={`fixed inset-0 flex items-center justify-center z-50 ${
+          isVisible ? "visible" : "invisible"
+        }`}
       >
-        <div className="bg-white p-8 rounded shadow-lg w-3/4 h-3/4">
+        <div className="bg-white p-8 rounded shadow-lg w-3/4 h-3/4 relative">
+          <div className="absolute top-4 right-4">
+            <button type="button" onClick={onClose}>
+              <FontAwesomeIcon
+                icon={faTimes}
+                className="text-gray-500 text-xl"
+              />
+            </button>
+          </div>
           <div className="modal-content">
-            <div className="modal-header">
-              <button type="button" className="close" onClick={onClose}>
-                <span>&times;</span>
-              </button>
-            </div>
-            <div className="modal-body">
-              <PermitApplication editData={editData} />
-            </div>
+            <PermitApplication
+              editData={editData}
+              permitId={editData?.permitId}
+              setIsModalVisible={setIsModalVisible}
+            />
           </div>
         </div>
       </div>
@@ -248,8 +264,9 @@ interface BackdropProps {
 const Backdrop: React.FC<BackdropProps> = ({ isVisible, onClose }) => {
   return (
     <div
-      className={`fixed inset-0 bg-black opacity-50 z-50 transition-opacity ${isVisible ? "visible" : "invisible"
-        }`}
+      className={`fixed inset-0 bg-black opacity-50 z-50 transition-opacity ${
+        isVisible ? "visible" : "invisible"
+      }`}
       onClick={onClose}
     ></div>
   );

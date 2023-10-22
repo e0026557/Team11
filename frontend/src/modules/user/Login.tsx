@@ -10,7 +10,11 @@ import {
   useForm,
 } from "react-hook-form";
 import { toast } from "react-toastify";
-import { invalidEmailErrorMsg, maxLengthErrorMsg, requiredInputErrorMsg } from "../../shared/util/error-message.util";
+import {
+  invalidEmailErrorMsg,
+  maxLengthErrorMsg,
+  requiredInputErrorMsg,
+} from "../../shared/util/error-message.util";
 import { isValidEmail } from "../../shared/util/validation";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
@@ -47,20 +51,24 @@ const Login = () => {
     console.log("submitForm: ", data);
     try {
       setIsLoading(true);
-      const loginResponse = await axios.post("https://rvdq38ozu8.execute-api.ap-southeast-1.amazonaws.com/dev/api/user/Login", data);
+      const loginResponse = await axios.post(
+        "https://pjwui6c4nj.execute-api.ap-southeast-1.amazonaws.com/dev/userapi/user/Login",
+        data
+      );
 
-      console.log('loginResponse: ', loginResponse);
+      console.log("loginResponse: ", loginResponse);
 
       if (loginResponse.status === 200) {
         sessionStorage.setItem("userId", loginResponse?.data?.userId);
         setIsLoading(false);
-        navigate('/dashboard');
+        navigate("/dashboard");
       }
-    } catch (error) {
+    } catch (error: any) {
       setIsLoading(false);
-      console.log('error: ', error);
+      console.log("error: ", error);
+      const errorMessage = error?.response?.data;
       toast.error(
-        "An error occurred while logging in. Please try again.",
+        errorMessage || "An error occurred while logging in. Please try again.",
         {
           toastId: "login-error",
         }
@@ -110,7 +118,7 @@ const Login = () => {
                     },
                     maxLength: {
                       value: 320,
-                      message: maxLengthErrorMsg('email', 320),
+                      message: maxLengthErrorMsg("email", 320),
                     },
                     validate: {
                       isValidEmail: (value) =>
@@ -156,8 +164,8 @@ const Login = () => {
                     },
                     maxLength: {
                       value: 50,
-                      message: maxLengthErrorMsg('password', 50),
-                    }
+                      message: maxLengthErrorMsg("password", 50),
+                    },
                   })}
                   type="password"
                   maxLength={50}
@@ -177,11 +185,7 @@ const Login = () => {
                 className="flex w-full justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
                 disabled={isLoading}
               >
-                {
-                  isLoading ? (
-                    <LoadingIcon />
-                  ) : 'Sign in'
-                }
+                {isLoading ? <LoadingIcon /> : "Sign in"}
               </button>
             </div>
           </form>

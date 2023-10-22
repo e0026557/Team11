@@ -1,6 +1,6 @@
 import React, { useState } from "react";
-import ReviewModal from "../modal/ReviewModal";
 import { generateRandomImage } from "../util/util";
+import { useNavigate } from "react-router-dom";
 
 export interface ICampsiteCardProps {
   campsiteId: number;
@@ -12,7 +12,7 @@ export interface ICampsiteCardProps {
 }
 
 const Card = (props: { card: ICampsiteCardProps }) => {
-  const [open, setOpen] = useState(false);
+  const navigate = useNavigate();
 
   return (
     <>
@@ -21,7 +21,7 @@ const Card = (props: { card: ICampsiteCardProps }) => {
           <div className="relative h-72 w-full overflow-hidden rounded-lg">
             <img
               src={generateRandomImage()}
-              alt="Photo of campsite"
+              alt="Campsite area"
               className="h-full w-full object-cover object-center"
             />
           </div>
@@ -49,13 +49,12 @@ const Card = (props: { card: ICampsiteCardProps }) => {
           <button
             type="button"
             className="w-full rounded-md border border-transparent bg-gray-100 px-8 py-2 text-sm font-medium text-gray-900 hover:bg-gray-200"
-            onClick={() => setOpen(true)}
+            onClick={() => navigate(`/campsites/${props.card.campsiteId}`)}
           >
-            Reviews<span className="sr-only"> {props.card.campsiteName}</span>
+            More Info<span className="sr-only"> {props.card.campsiteName}</span>
           </button>
         </div>
       </div>
-      <ReviewModal open={open} setOpen={setOpen} />
     </>
   );
 };

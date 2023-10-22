@@ -13,10 +13,10 @@ const FeedbackForm: React.FC<{ userId?: string }> = ({ userId }) => {
     try {
       setIsSubmitting(true);
       const apiUrl =
-        "https://teic3anj6l.execute-api.ap-southeast-1.amazonaws.com/dev/api/feedback/AddFeedback";
+        "https://pjwui6c4nj.execute-api.ap-southeast-1.amazonaws.com/dev/feedbackapi/AddFeedback";
 
       await axios.post(apiUrl, {
-        userId: userId,
+        userId: sessionStorage.getItem("userId"),
         title,
         description,
       });
