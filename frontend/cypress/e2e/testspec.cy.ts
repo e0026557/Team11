@@ -11,7 +11,12 @@ describe("Login Specs", () => {
     });
   });
 
-  it("Should login with credentials", () => {
+  it("Should not login with incorrect credentials", () => {
+    cy.intercept(
+      "POST",
+      "https://pjwui6c4nj.execute-api.ap-southeast-1.amazonaws.com/dev/userapi/user/Login"
+    ).as("login");
+
     cy.visit(BASE_URL + "/login")
       .then(() => {
         cy.get("input[name='email']").type("test@email.com");
@@ -20,5 +25,29 @@ describe("Login Specs", () => {
       .as("Login");
 
     cy.get('button[type="submit"]').click();
+    cy.wait("@login").then((interception) => {
+      console.log("interception: ", interception);
+      assert(interception?.response?.statusCode === 200);
+    });
+  });
+
+  it("Should login with correct credentials", () => {
+    cy.intercept(
+      "POST",
+      "https://pjwui6c4nj.execute-api.ap-southeast-1.amazonaws.com/dev/userapi/user/Login"
+    ).as("login");
+
+    cy.visit(BASE_URL + "/login")
+      .then(() => {
+        cy.get("input[name='email']").type("test111@email.com");
+        cy.get("input[name='password']").type("test");
+      })
+      .as("Login");
+
+    cy.get('button[type="submit"]').click();
+    cy.wait("@login").then((interception) => {
+      console.log("interception: ", interception);
+      assert(interception?.response?.statusCode === 200);
+    });
   });
 });
