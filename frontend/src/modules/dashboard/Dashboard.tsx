@@ -199,6 +199,7 @@ const Dashboard = () => {
       </div>
       <Modal
         isVisible={isModalVisible}
+        setIsModalVisible={setIsModalVisible}
         onClose={closeModal}
         editData={editData}
       />

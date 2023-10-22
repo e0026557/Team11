@@ -84,7 +84,7 @@ const PermitApplication = ({
 
   const handleSubmit = () => {
     const apiUrl =
-      "https://pjwui6c4nj.execute-api.ap-southeast-1.amazonaws.com/dev/permitapi/createpermit";
+      "https://pjwui6c4nj.execute-api.ap-southeast-1.amazonaws.com/dev/permitapi/permit/createpermit";
 
     axios
       .post(
@@ -109,7 +109,7 @@ const PermitApplication = ({
   };
 
   const handleEdit = (permitId: number | undefined, formData: EditData) => {
-    const apiUrl = `https://pjwui6c4nj.execute-api.ap-southeast-1.amazonaws.com/dev/permitapi/editpermit/${permitId}`;
+    const apiUrl = `https://pjwui6c4nj.execute-api.ap-southeast-1.amazonaws.com/dev/permitapi/permit/editpermit/${permitId}`;
 
     axios
       .put(
